@@ -1,0 +1,31 @@
+const cloudinary = require("cloudinary").v2
+const fs = require("fs");
+
+cloudinary.config({
+  cloud_name: "dqednriao",
+  api_secret: "krCJefCaAJQndH7hPYLHpJEBsyQ",
+  api_key: "763994394988564"
+})
+
+
+const uploadToCloud = async function (locaFilePath) {
+  try {
+    var mainFolderName = "public";
+    var filePathOnCloudinary = mainFolderName + "/" + locaFilePath;
+    // console.log(locaFilePath.split(".")[0], filePathOnCloudinary);
+    console.log(filePathOnCloudinary)
+
+    const result = await cloudinary.uploader
+      .upload(filePathOnCloudinary, {public_id:locaFilePath.split(".")[0],overwrite: true, unique_filename: true });
+            fs.unlinkSync("public/"+locaFilePath);
+    return {
+      message: "Success",
+      url: result.secure_url,
+    };
+  }catch(error) {
+      // Remove file from local uploads folder
+      return { message: "Fail" };
+    };
+}
+
+module.exports = uploadToCloud;

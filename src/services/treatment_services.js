@@ -1,0 +1,182 @@
+const ApiResponse = require("../configs/api_response");
+const Problem = require("../models/treatment/problem");
+const Sector = require("../models/treatment/sector");
+const Treatment = require("../models/treatment/treatment");
+const TreatmentFramer = require("../models/treatment/treatment_farmer");
+const UserTreatment = require("../models/treatment/user_treatment");
+
+// SECTOR
+const createSector = async (req, res) => {
+  let sector = await Sector.create({
+    name: req.body.name,
+  });
+
+  if (!sector) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, sector);
+};
+const getAllSectors = async (req, res) => {
+  let sectors = await Sector.findAll({
+    where: { status: "1" },
+  });
+
+  if (!sectors) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, sectors);
+};
+
+// PROBLEM
+const createProblem = async (req, res) => {
+  let problem = await Problem.create({
+    name: req.body.name,
+    sectorId: req.body.sectorId,
+  });
+
+  if (!problem) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, problem);
+};
+const getAllProblems = async (req, res) => {
+  const { sectorId } = req.query;
+  let problems = await Problem.findAll({
+    where: { status: "1", sectorId: sectorId },
+    order: [["createdAt", "DESC"]],
+  });
+
+  if (!problems) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, problems);
+};
+
+// TREATMENT
+const createTreatment = async (req, res) => {
+  const imageUrls = new Array();
+  var isNoImage = false;
+  if (!req.files) {
+    isNoImage = true;
+    console.log("No Images");
+  } else {
+    const { imageUrl1, imageUrl2, imageUrl3 } = req.files;
+    const files = [imageUrl1, imageUrl2, imageUrl3];
+
+    for (let i = 0; i < files.length; i++) {
+      let imgFileUrl;
+
+      if (!files[i]) {
+        imgFileUrl = null;
+      } else {
+        // If does not have image mime type prevent from uploading
+        if (/^files[i]/.test(files[i].mimetype)) return res.sendStatus(400);
+        imgFileUrl =
+          __dirname + "/treatment_upload/" + Date.now() + files[i].name;
+
+        // Move the uploaded image to our upload folder
+        await files[i].mv(imgFileUrl);
+        imgFileUrl = imgFileUrl.substring(imgFileUrl.indexOf("admin"));
+        imgFileUrl = "https://" + imgFileUrl;
+      }
+
+      imageUrls.push(imgFileUrl);
+    }
+  }
+  let treatment = await Treatment.create({
+    name: req.body.name,
+    description: req.body.description,
+    imageUrl1: isNoImage ? null : imageUrls[0],
+    imageUrl2: isNoImage ? null : imageUrls[1],
+    imageUrl3: isNoImage ? null : imageUrls[2],
+    problemId: req.body.problemId,
+  });
+
+  await UserTreatment.create({
+    treatmentId: treatment.id,
+    userId: req.body.user.id,
+  });
+
+  if (!treatment) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, treatment);
+};
+
+const getAllTreatments = async (req, res) => {
+  const { problemId } = req.query;
+  let treatments = await Treatment.findAll({
+    where: { status: "1", problemId: problemId },
+    order: [["createdAt", "DESC"]],
+    include: [{ model: Problem, include: Sector }],
+  });
+
+  if (!treatments) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, treatments);
+};
+const importTreatment = async (req, res) => {
+  const { treatmentId } = req.query;
+  let userTreatment = await UserTreatment.findOne({
+    where: {
+      treatmentId: treatmentId,
+      userId: req.body.user.id,
+    },
+  });
+  if (userTreatment) return ApiResponse.success(res, userTreatment);
+
+  let newUserTreatment = await UserTreatment.create({
+    treatmentId: treatmentId,
+    userId: req.body.user.id,
+  });
+  if (!newUserTreatment)
+    return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, newUserTreatment);
+};
+
+const createTreatmentFramer = async (req, res) => {
+  let treatmentFramer = await TreatmentFramer.create({
+    treatmentId: req.body.treatmentId,
+    nameOne: req.body.nameOne,
+    tankOne: req.body.tankOne,
+    phoneOne: req.body.phoneOne,
+    nameTwo: req.body.nameTwo,
+    tankTwo: req.body.tankTwo,
+    phoneTwo: req.body.phoneTwo,
+    nameThree: req.body.nameThree,
+    tankThree: req.body.tankThree,
+    treatmentId: req.body.treatmentId,
+    phoneThree: req.body.phoneThree,
+  });
+
+  if (!treatmentFramer)
+    return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, treatmentFramer);
+};
+
+const findMyTreatments = async (req, res) => {
+  let userTreatments = await UserTreatment.findAll({
+    where: { status: "1", userId: req.body.user.id },
+    include: [
+      { model: Treatment, include: [{ model: Problem, include: Sector }] },
+    ],
+    order: [["createdAt", "DESC"]],
+  });
+  let treatments = new Array();
+  userTreatments.map((userTreatment) =>
+    treatments.push(userTreatment.treatment)
+  );
+
+  if (!treatments) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, treatments);
+};
+
+module.exports = {
+  createSector,
+  getAllSectors,
+  createProblem,
+  getAllProblems,
+  createTreatment,
+  getAllTreatments,
+  importTreatment,
+  createTreatmentFramer,
+  findMyTreatments,
+};
