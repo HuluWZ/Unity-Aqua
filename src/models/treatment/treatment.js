@@ -36,7 +36,7 @@ const Treatment = sequelize.define(
     status: {
       type: DataTypes.ENUM,
       values: ["1", "2", "3"],
-      defaultValue: "1",
+      defaultValue: "2",
     },
   },
   { freezeTableName: true }

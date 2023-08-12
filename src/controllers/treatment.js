@@ -26,6 +26,8 @@ router.get("/problem", errorHandler(TreatmentService.getAllProblems));
 // TREATMENT
 router.post("/", verifyToken,uploadMultipleImage, errorHandler(TreatmentService.createTreatment));
 router.get("/", errorHandler(TreatmentService.getAllTreatments));
+router.delete("/:id", errorHandler(TreatmentService.deleteTreatment));
+
 router.get("/:problemId", errorHandler(TreatmentService.getTreatments));
 router.get("/my", verifyToken, errorHandler(TreatmentService.findMyTreatments));
 router.get(
@@ -38,5 +40,20 @@ router.post(
   verifyToken,
   errorHandler(TreatmentService.createTreatmentFramer)
 );
+router.get(
+  "/farmer/all",
+  errorHandler(TreatmentService.getAllFarmers)
+);
+router.put(
+  "/farmer/:id",
+  verifyToken,
+  errorHandler(TreatmentService.approveFarmer)
+);
+router.delete(
+  "/farmer/:id",
+  verifyToken,
+  errorHandler(TreatmentService.deleteFarmer)
+);
+
 
 module.exports = router;

@@ -5,7 +5,7 @@ const Treatment = require("../models/treatment/treatment");
 const TreatmentFramer = require("../models/treatment/treatment_farmer");
 const UserTreatment = require("../models/treatment/user_treatment");
 const uploadToCloud = require("../configs/cloudnary");
-
+const User = require("../models/user");
 // SECTOR
 const createSector = async (req, res) => {
   let sector = await Sector.create({
@@ -113,6 +113,15 @@ const getAllTreatments = async (req, res) => {
 
   return ApiResponse.success(res, treatments);
 };
+
+const deleteTreatment = async (req, res) => {
+  const { id } = req.params
+  let treatments = await Treatment.deleteOne(id);
+
+  if (!treatments) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, treatments);
+};
 const getTreatments = async (req, res) => {
   const { problemId } = req.params;
   let treatments = await Treatment.findAll({
@@ -165,6 +174,46 @@ const createTreatmentFramer = async (req, res) => {
   return ApiResponse.success(res, treatmentFramer);
 };
 
+const approveFarmer = async (req, res) => {
+  const { id } = req.params;
+  let treatmentFramer = await TreatmentFramer.findByPk(id);
+  const { treatmentId } = treatmentFramer
+  //  Update Treatment
+ let [sectors,b ]= await Treatment.update(
+     {status:1},
+     {where: { id: treatmentId} ,
+    returning: true}
+  )
+
+  if (sectors === 0) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+
+  return ApiResponse.success(res, b);
+};
+
+const deleteFarmer = async (req, res) => {
+  const { id } = req.params;
+  let treatmentFramer = await TreatmentFramer.deleteOne(id);
+  // delete Treatment 
+  if (treatmentFramer) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, treatmentFramer);
+};
+const getAllFarmers = async (req, res) => {
+  console.log(" Welcome ")
+  let treatmentFramer = await TreatmentFramer.findAll({
+    include: [ 
+      { model: Treatment, include: [{ model: Problem, include: Sector }] },
+    ]
+  });
+  // let treatment = await Treatment.update({status:id})
+  console.log(" VGB ",treatmentFramer);
+  if (!treatmentFramer)
+    return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, treatmentFramer);
+};
+
 const findMyTreatments = async (req, res) => {
   let userTreatments = await UserTreatment.findAll({
     where: { status: "1", userId: req.body.user.id },
@@ -193,6 +242,10 @@ module.exports = {
   createTreatment,
   getAllTreatments,
   importTreatment,
+  deleteTreatment,
+  getAllFarmers,
+  approveFarmer,
+  deleteFarmer,
   createTreatmentFramer,
   findMyTreatments,
 };
