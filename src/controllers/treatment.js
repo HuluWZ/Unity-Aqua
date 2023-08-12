@@ -44,6 +44,11 @@ router.get(
   "/farmer/all",
   errorHandler(TreatmentService.getAllFarmers)
 );
+router.get(
+  "/farmer/:id",
+  errorHandler(TreatmentService.getFarmers)
+);
+
 router.put(
   "/farmer/:id",
   verifyToken,
