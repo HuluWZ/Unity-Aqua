@@ -196,8 +196,6 @@ const approveFarmer = async (req, res) => {
 
 const deleteFarmer = async (req, res) => {
   const { id } = req.params;
-    console.log(" Welcome ",id)
-
   let treatmentFramer = await TreatmentFramer.destroy({
     where: {
       id: id
@@ -211,13 +209,13 @@ const deleteFarmer = async (req, res) => {
 
 const getFarmers = async (req, res) => {
   const { id } = req.params;
-  let treatmentFramer = await TreatmentFramer.findByPk(id,{
+  let treatmentFramer = await TreatmentFramer.findByPk(id,
+    {
     include: [ 
       { model: Treatment, include: [{ model: Problem, include: Sector }] },
     ]
   });
-  // let treatment = await Treatment.update({status:id})
-  // console.log(" VGB ",treatmentFramer);
+  console.log(" VGB ",treatmentFramer);
   if (!treatmentFramer)
     return ApiResponse.error(res, "Something Went Wrong", 200);
 

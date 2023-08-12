@@ -51,12 +51,10 @@ router.get(
 
 router.put(
   "/farmer/:id",
-  verifyToken,
   errorHandler(TreatmentService.approveFarmer)
 );
 router.delete(
   "/farmer/:id",
-  verifyToken,
   errorHandler(TreatmentService.deleteFarmer)
 );
 
