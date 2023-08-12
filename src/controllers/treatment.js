@@ -1,6 +1,7 @@
 const express = require("express");
 const TreatmentService = require("../services/treatment_services");
 const router = express.Router();
+const { uploadMultipleImage } = require("../middlewares/fileUpload");
 
 const errorHandler = require("../configs/error_handler_config");
 const verifyToken = require("../middlewares/verify_token");
@@ -12,6 +13,7 @@ router.post(
   errorHandler(TreatmentService.createSector)
 );
 router.get("/sector", errorHandler(TreatmentService.getAllSectors));
+router.put("/sector/:id", errorHandler(TreatmentService.updateSector));
 
 // PROBLEM
 router.post(
@@ -22,8 +24,9 @@ router.post(
 router.get("/problem", errorHandler(TreatmentService.getAllProblems));
 
 // TREATMENT
-router.post("/", verifyToken, errorHandler(TreatmentService.createTreatment));
+router.post("/", verifyToken,uploadMultipleImage, errorHandler(TreatmentService.createTreatment));
 router.get("/", errorHandler(TreatmentService.getAllTreatments));
+router.get("/:problemId", errorHandler(TreatmentService.getTreatments));
 router.get("/my", verifyToken, errorHandler(TreatmentService.findMyTreatments));
 router.get(
   "/import",

@@ -4,6 +4,7 @@ const Sector = require("../models/treatment/sector");
 const Treatment = require("../models/treatment/treatment");
 const TreatmentFramer = require("../models/treatment/treatment_farmer");
 const UserTreatment = require("../models/treatment/user_treatment");
+const uploadToCloud = require("../configs/cloudnary");
 
 // SECTOR
 const createSector = async (req, res) => {
@@ -25,6 +26,20 @@ const getAllSectors = async (req, res) => {
   return ApiResponse.success(res, sectors);
 };
 
+const updateSector = async (req, res) => {
+  const { id } = req.params;
+
+  let [sectors,b ]= await Sector.update(
+     req.body,
+    {where: { id: id } ,
+    returning: true}
+  )
+
+  if (sectors === 0) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, b);
+};
+
 // PROBLEM
 const createProblem = async (req, res) => {
   let problem = await Problem.create({
@@ -39,7 +54,8 @@ const createProblem = async (req, res) => {
 const getAllProblems = async (req, res) => {
   const { sectorId } = req.query;
   let problems = await Problem.findAll({
-    where: { status: "1", sectorId: sectorId },
+    where: { status: "1" },
+    include:[Sector],
     order: [["createdAt", "DESC"]],
   });
 
@@ -52,45 +68,33 @@ const getAllProblems = async (req, res) => {
 const createTreatment = async (req, res) => {
   const imageUrls = new Array();
   var isNoImage = false;
+  console.log(req.files)
+  console.log(req.body)
   if (!req.files) {
     isNoImage = true;
     console.log("No Images");
   } else {
-    const { imageUrl1, imageUrl2, imageUrl3 } = req.files;
-    const files = [imageUrl1, imageUrl2, imageUrl3];
-
-    for (let i = 0; i < files.length; i++) {
-      let imgFileUrl;
-
-      if (!files[i]) {
-        imgFileUrl = null;
-      } else {
-        // If does not have image mime type prevent from uploading
-        if (/^files[i]/.test(files[i].mimetype)) return res.sendStatus(400);
-        imgFileUrl =
-          __dirname + "/treatment_upload/" + Date.now() + files[i].name;
-
-        // Move the uploaded image to our upload folder
-        await files[i].mv(imgFileUrl);
-        imgFileUrl = imgFileUrl.substring(imgFileUrl.indexOf("admin"));
-        imgFileUrl = "https://" + imgFileUrl;
+    const files = req.files;
+    for (const file of files) {
+        const { url } = await uploadToCloud(file?.filename); 
+        imageUrls.push(url);
       }
 
-      imageUrls.push(imgFileUrl);
     }
-  }
+  
+  console.log(" Uploads ",imageUrls)
   let treatment = await Treatment.create({
     name: req.body.name,
     description: req.body.description,
-    imageUrl1: isNoImage ? null : imageUrls[0],
-    imageUrl2: isNoImage ? null : imageUrls[1],
-    imageUrl3: isNoImage ? null : imageUrls[2],
+    imageUrl1: imageUrls?.length == 0 ? null : imageUrls[0],
+    imageUrl2: imageUrls?.length == 0? null : imageUrls[1],
+    imageUrl3: imageUrls?.length == 0 ? null : imageUrls[2],
     problemId: req.body.problemId,
   });
-
+  console.log(treatment.id, req.user);
   await UserTreatment.create({
     treatmentId: treatment.id,
-    userId: req.body.user.id,
+    userId: req.user.id,
   });
 
   if (!treatment) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -99,7 +103,18 @@ const createTreatment = async (req, res) => {
 };
 
 const getAllTreatments = async (req, res) => {
-  const { problemId } = req.query;
+  let treatments = await Treatment.findAll({
+    where: { status: "1" },
+    order: [["createdAt", "DESC"]],
+    include: [{ model: Problem, include: Sector }],
+  });
+
+  if (!treatments) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, treatments);
+};
+const getTreatments = async (req, res) => {
+  const { problemId } = req.params;
   let treatments = await Treatment.findAll({
     where: { status: "1", problemId: problemId },
     order: [["createdAt", "DESC"]],
@@ -141,7 +156,6 @@ const createTreatmentFramer = async (req, res) => {
     phoneTwo: req.body.phoneTwo,
     nameThree: req.body.nameThree,
     tankThree: req.body.tankThree,
-    treatmentId: req.body.treatmentId,
     phoneThree: req.body.phoneThree,
   });
 
@@ -172,6 +186,8 @@ const findMyTreatments = async (req, res) => {
 module.exports = {
   createSector,
   getAllSectors,
+  getTreatments,
+  updateSector,
   createProblem,
   getAllProblems,
   createTreatment,

@@ -148,4 +148,10 @@ exports.uploadBookandCover = multer({
   name:"pdf",maxCount:1
 }])
   
+exports.uploadMultipleImage = multer({
+  storage: uploadImageStorage,
+  limits: { fileSize: 1024 * 1024 * 5 },
+  fileFilter: fileFilter
+}).array("images",3);
+
 exports.cloudUploadTry = multer({ storage: storage }).single("image");
