@@ -9,7 +9,6 @@ const verifyToken = require("../middlewares/verify_token");
 // SECTOR
 router.post(
   "/sector",
-  verifyToken,
   errorHandler(TreatmentService.createSector)
 );
 router.get("/sector", errorHandler(TreatmentService.getAllSectors));
@@ -22,6 +21,7 @@ router.post(
   errorHandler(TreatmentService.createProblem)
 );
 router.get("/problem", errorHandler(TreatmentService.getAllProblems));
+router.get("/problem/sector/:id", errorHandler(TreatmentService.getProblemBySector));
 
 // TREATMENT
 router.post("/", verifyToken,uploadMultipleImage, errorHandler(TreatmentService.createTreatment));

@@ -64,6 +64,18 @@ const getAllProblems = async (req, res) => {
   return ApiResponse.success(res, problems);
 };
 
+const getProblemBySector = async (req, res) => {
+  const { id } = req.params;
+  let problems = await Problem.findAll({
+    where: { sectorId:id },
+    include:[Sector],
+    order: [["createdAt", "DESC"]],
+  });
+
+  if (!problems) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, problems);
+};
 // TREATMENT
 const createTreatment = async (req, res) => {
   const imageUrls = new Array();
@@ -259,6 +271,7 @@ module.exports = {
   getTreatments,
   updateSector,
   getFarmers,
+  getProblemBySector,
   createProblem,
   getAllProblems,
   createTreatment,
