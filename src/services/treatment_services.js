@@ -80,13 +80,16 @@ const getProblemBySector = async (req, res) => {
 const createTreatment = async (req, res) => {
   const imageUrls = new Array();
   var isNoImage = false;
-  console.log(req.files)
-  console.log(req.body)
+  // console.log(req.body)
   if (!req.files) {
     isNoImage = true;
     console.log("No Images");
   } else {
-    const files = req.files;
+  const imageUrl1 = req.files?.imageUrl1[0];
+  const imageUrl2 = req.files?.imageUrl2[0];
+  const imageUrl3 = req.files?.imageUrl3[0];
+
+    const files = [imageUrl1,imageUrl2,imageUrl3];
     for (const file of files) {
         const { url } = await uploadToCloud(file?.filename); 
         imageUrls.push(url);

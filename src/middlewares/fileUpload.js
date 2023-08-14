@@ -152,6 +152,12 @@ exports.uploadMultipleImage = multer({
   storage: uploadImageStorage,
   limits: { fileSize: 1024 * 1024 * 5 },
   fileFilter: fileFilter
-}).array("images",3);
+}).fields([{
+  name: "imageUrl1"
+}, {
+  name: "imageUrl2"
+}, {
+  name: "imageUrl3"
+}]);
 
 exports.cloudUploadTry = multer({ storage: storage }).single("image");
