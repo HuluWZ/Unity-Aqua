@@ -19,6 +19,10 @@ const Sector = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     status: {
       type: DataTypes.ENUM,
       values: ["1", "2"],

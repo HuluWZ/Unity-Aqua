@@ -8,8 +8,10 @@ const uploadToCloud = require("../configs/cloudnary");
 const User = require("../models/user");
 // SECTOR
 const createSector = async (req, res) => {
+   const { url } = await uploadToCloud(req.file?.filename); 
   let sector = await Sector.create({
     name: req.body.name,
+    image:url
   });
 
   if (!sector) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -40,6 +42,17 @@ const updateSector = async (req, res) => {
   return ApiResponse.success(res, b);
 };
 
+const deleteSector = async (req, res) => {
+  const { id } = req.params;
+  let sectors = await Sector.destroy({
+    where: {
+      id: id
+    }
+  });
+  if (sectors === 0) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, sectors);
+};
 // PROBLEM
 const createProblem = async (req, res) => {
   let problem = await Problem.create({
@@ -75,6 +88,19 @@ const getProblemBySector = async (req, res) => {
   if (!problems) return ApiResponse.error(res, "Something Went Wrong", 200);
 
   return ApiResponse.success(res, problems);
+};
+
+const deleteProblem = async (req, res) => {
+  const { id } = req.params;
+  let problem = await Problem.destroy({
+     where: {
+       id: id
+     }
+  });
+  
+  if (problem === 0) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, problem);
 };
 // TREATMENT
 const createTreatment = async (req, res) => {
@@ -140,6 +166,7 @@ const deleteTreatment = async (req, res) => {
 
   return ApiResponse.success(res, treatments);
 };
+
 const getTreatments = async (req, res) => {
   const { problemId } = req.params;
   let treatments = await Treatment.findAll({
@@ -271,6 +298,7 @@ const findMyTreatments = async (req, res) => {
 module.exports = {
   createSector,
   getAllSectors,
+  deleteProblem,
   getTreatments,
   updateSector,
   getFarmers,
@@ -284,6 +312,8 @@ module.exports = {
   getAllFarmers,
   approveFarmer,
   deleteFarmer,
+  deleteSector,
+  deleteProblem,
   createTreatmentFramer,
   findMyTreatments,
 };

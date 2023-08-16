@@ -74,7 +74,7 @@ const uploadVideoStorage = multer.diskStorage({
 
 
  const fileFilter = (req, file, cb) => {
-     if (!file.originalname.match(/\.(jpg|jpeg|png|PNG|JPEG|JPG)$/)) {
+     if (!file.originalname.match(/\.(jpg|jpeg|png|PNG|JPEG|JPG|.svg)$/)) {
       cb(new Error("Please upload a valid image file type"), false);
      }
       cb(undefined, true);
