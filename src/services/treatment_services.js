@@ -145,7 +145,7 @@ const createTreatment = async (req, res) => {
 
 const getAllTreatments = async (req, res) => {
   let treatments = await Treatment.findAll({
-    where: { status: "1" },
+    // where: { status: "1" },
     order: [["createdAt", "DESC"]],
     include: [{ model: Problem, include: Sector }],
   });
@@ -223,12 +223,14 @@ const approveFarmer = async (req, res) => {
   const { id } = req.params;
   let treatmentFramer = await TreatmentFramer.findByPk(id);
   const { treatmentId } = treatmentFramer
+  // change TreatmentFarmer status To 2
   //  Update Treatment
- let [sectors,b ]= await Treatment.update(
-     {status:1},
+  let [sectors,b ]= await Treatment.update(
+     {status:2},
      {where: { id: treatmentId} ,
     returning: true}
   )
+  await treatmentFramer.update({ status: 2 });
 
   if (sectors === 0) return ApiResponse.error(res, "Something Went Wrong", 200);
 
@@ -238,13 +240,20 @@ const approveFarmer = async (req, res) => {
 
 const deleteFarmer = async (req, res) => {
   const { id } = req.params;
+  let treatment = await TreatmentFramer.findByPk(id);
+  const { treatmentId } = treatment
+  let [sectors,b ]= await Treatment.update(
+     {status:1},
+     {where: { id: treatmentId} ,
+    returning: true}
+  )
   let treatmentFramer = await TreatmentFramer.destroy({
     where: {
       id: id
     }
   });
-  console.log(" Delete ",treatmentFramer)
-  if (treatmentFramer==0) return ApiResponse.error(res, "Something Went Wrong", 200);
+ 
+  if (treatmentFramer==0 || sectors == 0) return ApiResponse.error(res, "Something Went Wrong", 200);
 
   return ApiResponse.success(res, treatmentFramer);
 };
@@ -262,6 +271,31 @@ const getFarmers = async (req, res) => {
     return ApiResponse.error(res, "Something Went Wrong", 200);
 
   return ApiResponse.success(res, treatmentFramer);
+};
+
+const getFarmerFromProblem = async (req, res) => {
+  const { id } = req.params;
+  console.log(" ID ",id)
+  const treatmentFarmers = await TreatmentFramer.findAll({
+    include: [
+      {
+        model: Treatment,
+        where:{problemId:id},
+        include: [
+            {
+              model: Problem,
+              include: Sector 
+            }
+          ]
+        }
+      ]
+  });
+
+
+  if (!treatmentFarmers)
+    return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, treatmentFarmers);
 };
 
 const getAllFarmers = async (req, res) => {
@@ -314,6 +348,7 @@ module.exports = {
   deleteFarmer,
   deleteSector,
   deleteProblem,
+  getFarmerFromProblem,
   createTreatmentFramer,
   findMyTreatments,
 };

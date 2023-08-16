@@ -51,6 +51,11 @@ router.get(
   errorHandler(TreatmentService.getFarmers)
 );
 
+router.get(
+  "/farmer/problem/:id",
+  errorHandler(TreatmentService.getFarmerFromProblem)
+);
+
 router.put(
   "/farmer/:id",
   errorHandler(TreatmentService.approveFarmer)
