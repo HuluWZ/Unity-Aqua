@@ -273,7 +273,7 @@ const getFarmers = async (req, res) => {
   return ApiResponse.success(res, treatmentFramer);
 };
 
-const getFarmerFromProblem = async (req, res) => {
+const getProblemByFarmer = async (req, res) => {
   const { id } = req.params;
   console.log(" ID ",id)
   const treatmentFarmers = await TreatmentFramer.findAll({
@@ -348,7 +348,7 @@ module.exports = {
   deleteFarmer,
   deleteSector,
   deleteProblem,
-  getFarmerFromProblem,
+  getProblemByFarmer,
   createTreatmentFramer,
   findMyTreatments,
 };

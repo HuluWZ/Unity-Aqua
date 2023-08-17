@@ -53,7 +53,7 @@ router.get(
 
 router.get(
   "/farmer/problem/:id",
-  errorHandler(TreatmentService.getFarmerFromProblem)
+  errorHandler(TreatmentService.getProblemByFarmer)
 );
 
 router.put(
