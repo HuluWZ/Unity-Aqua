@@ -45,9 +45,9 @@ const Video = sequelize.define(
 User.hasMany(Video);
 Video.belongsTo(User);
 
-Video.belongsTo(Topic), {
-  foreignKey: 'topicId',
-  as:'topic'
-};
+// Video.belongsTo(Topic), {
+//   foreignKey: 'topicId',
+//   as:'topic'
+// };
 
 module.exports = Video;

@@ -7,13 +7,14 @@ const create = async (req, res) => {
   //Creating Video
   const { file } = req;
   const { url } = await uploadToCloud(file?.filename);
+  console.log(url, req.body);
   let news = await Video.create({
     title: req.body.title,
     description:req.body.description,
     thumbnailUrl: url,
     url: req.body.url,
     userId: req.user.id,
-    topicId: req.body.topicId
+    // topicId: req.body.topicId
   });
 
   if (!news) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -25,7 +26,6 @@ const getAllVideo = async (req, res) => {
   console.log(" Get All Video ")
   let videosList = await Video.findAll({
     order: [["createdAt", "DESC"]],
-    // include: [{ model: Topic, as: 'topic', attributes: ['name'] }]
   });
    console.log(" Get All Video ")
   if (!videosList) return ApiResponse.error(res, "Something Went Wrong", 200);
