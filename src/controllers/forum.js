@@ -1,6 +1,7 @@
 const express = require("express");
 const ForumServices = require("../services/forum_services");
 const router = express.Router();
+const { uploadMultipleImage } = require("../middlewares/fileUpload");
 
 const validate = require("../middlewares/validate");
 const errorHandler = require("../configs/error_handler_config");
@@ -12,6 +13,7 @@ const verifyToken = require("../middlewares/verify_token");
 router.post(
   "/",
   verifyToken,
+  uploadMultipleImage,
   //   validate(signUpSchema)
   errorHandler(ForumServices.create)
 );

@@ -11,41 +11,33 @@ const Fuse = require("fuse.js");
 const TreatmentFramer = require("../models/treatment/treatment_farmer");
 const News = require("../models/news");
 const Book = require("../models/book");
+const uploadToCloud = require("../configs/cloudnary");
 
 const create = async (req, res) => {
   const forumTopic = await ForumTopic.findByPk(req.body.topicId);
   if (!forumTopic) return ApiResponse.error(res, "Topic not found", 200);
 
-  const imageUrls = new Array();
   var isNoImage = false;
   if (!req.files) {
     isNoImage = true;
     console.log("No Images");
   } else {
-    const { imageUrl1, imageUrl2, imageUrl3 } = req.files;
-    const files = [imageUrl1, imageUrl2, imageUrl3];
+   const { imageUrl1, imageUrl2, imageUrl3 } = req.files;
+  var imageUrls = [];
 
-    for (let i = 0; i < files.length; i++) {
-      let imgFileUrl;
+const fileUrls = [imageUrl1, imageUrl2, imageUrl3];
+    // console.log(fileUrls);
+for (const file of fileUrls) {
+  if (file) {
+    const { url } = await uploadToCloud(file[0].filename);
+    console.log("URL", url);
+    imageUrls.push(url);
+  }
+}
 
-      if (!files[i]) {
-        imgFileUrl = null;
-      } else {
-        // If does not have image mime type prevent from uploading
-        if (/^files[i]/.test(files[i].mimetype)) return res.sendStatus(400);
-        imgFileUrl = __dirname + "/answer_upload/" + Date.now() + files[i].name;
-
-        // Move the uploaded image to our upload folder
-        await files[i].mv(imgFileUrl);
-        imgFileUrl = imgFileUrl.substring(imgFileUrl.indexOf("admin"));
-        imgFileUrl = "https://" + imgFileUrl;
-      }
-
-      imageUrls.push(imgFileUrl);
-    }
   }
 
-  console.log(req?.body?.user)
+  console.log(isNoImage,imageUrls)
   //Creating Forum
   let forum = await Forum.create({
     title: req.body.title,
@@ -54,7 +46,7 @@ const create = async (req, res) => {
     imageUrl2: isNoImage ? null : imageUrls[1],
     imageUrl3: isNoImage ? null : imageUrls[2],
     forumTopicId: req.body.topicId,
-    userId: req.body.user.id,
+    userId: req.user.id ,
   });
 
   if (!forum) return ApiResponse.error(res, "Something Went Wrong", 200);
