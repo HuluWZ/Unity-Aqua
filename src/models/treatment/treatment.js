@@ -33,6 +33,10 @@ const Treatment = sequelize.define(
     imageUrl3: {
       type: DataTypes.TEXT,
     },
+    importCount: {
+      type: DataTypes.INTEGER,
+      defaultValue:0
+    },
     status: {
       type: DataTypes.ENUM,
       values: ["1", "2", "3"],

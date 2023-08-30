@@ -17,6 +17,7 @@ router.post(
   //   validate(signUpSchema)
   errorHandler(ForumServices.create)
 );
+router.get("/find", errorHandler(ForumServices.searchVideo));
 router.get("/get/:id", verifyToken, errorHandler(ForumServices.getForumInfo));
 router.get("/", verifyToken, errorHandler(ForumServices.getAllForums));
 router.delete("/", errorHandler(ForumServices.deleteForum));

@@ -32,6 +32,7 @@ const getAllNews = async (req, res) => {
   return ApiResponse.success(res, newsList);
 };
 const getNew = async (req, res) => {
+  console.log("1")
   const {id} = req.params
   // await Book.sync({ alter: true });
   let newsList = await News.findOne({where:{id:id}})
@@ -69,6 +70,7 @@ const updateNews = async (req, res) => {
   return ApiResponse.success(res, newsList);
 };
 const searchNews = async (req, res) => {
+  console.log(" NEws Called ")
   const { search } = req.query;
   if (!search) return ApiResponse.error(res, "News ID Not Found", 400);
   let newsList = await News.findAll({

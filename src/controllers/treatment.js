@@ -16,6 +16,7 @@ router.get("/sector",errorHandler(TreatmentService.getAllSectors));
 router.put("/sector/:id", errorHandler(TreatmentService.updateSector));
 router.delete("/sector/:id", errorHandler(TreatmentService.deleteSector));
 
+router.get("/find/sector/:id", errorHandler(TreatmentService.getTreatmentBySector));
 // PROBLEM
 router.post(
   "/problem",
@@ -30,13 +31,13 @@ router.post("/", verifyToken,uploadMultipleImage, errorHandler(TreatmentService.
 router.get("/", errorHandler(TreatmentService.getAllTreatments));
 router.delete("/:id", errorHandler(TreatmentService.deleteTreatment));
 
-router.get("/:problemId", errorHandler(TreatmentService.getTreatments));
-router.get("/my", verifyToken, errorHandler(TreatmentService.findMyTreatments));
 router.get(
   "/import",
   verifyToken,
   errorHandler(TreatmentService.importTreatment)
 );
+router.get("/:problemId", errorHandler(TreatmentService.getTreatments));
+router.get("/my", verifyToken, errorHandler(TreatmentService.findMyTreatments));
 router.post(
   "/farmer",
   verifyToken,

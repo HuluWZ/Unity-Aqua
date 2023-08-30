@@ -12,9 +12,9 @@ router.post(
   //   validate(signUpSchema)
   errorHandler(NewsServices.create)
 );
+router.get("/search", errorHandler(NewsServices.searchNews));
 router.get("/:id", errorHandler(NewsServices.getNew));
 router.get("/", errorHandler(NewsServices.getAllNews));
-router.get("/search", errorHandler(NewsServices.searchNews));
 router.delete("/:id", errorHandler(NewsServices.deleteNews));
 router.put("/:id", errorHandler(NewsServices.updateNews));
 

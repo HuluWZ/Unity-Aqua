@@ -2,7 +2,7 @@ const ApiResponse = require("../configs/api_response");
 const Video = require("../models/video");
 const uploadToCloud = require("../configs/cloudnary");
 const Topic = require("../models/topic");
-
+const Sequelize = require('sequelize');
 const create = async (req, res) => {
   //Creating Video
   const { file } = req;
@@ -95,11 +95,34 @@ const inactiveVideo = async (req, res) => {
 
   return ApiResponse.success(res, videosList);
 };
+
+const searchVideo = async (req, res) => {
+  const { name } = req.query
+  if (!name ) {
+    let videosList = await Video.findAll({});
+    console.log(" Name ",name)
+    return ApiResponse.success(res, videosList);
+  }
+  let videosList = await Video.findAll({
+    where: {
+        [Sequelize.Op.or]: [
+          { title: { [Sequelize.Op.like]: `%${name}%` } },
+          { description: { [Sequelize.Op.like]: `%${name}%` } }
+        ]
+      }
+})
+  if (!videosList) return ApiResponse.error(res, "Something Went Wrong", 200);
+  console.log(" Result ",videosList)
+  return ApiResponse.success(res, videosList);
+};
+
+
 module.exports = {
   create,
   getAllVideo,
   getVideo,
   deleteVideo,
   updateVideo,
-  inactiveVideo
+  inactiveVideo,
+  searchVideo
 };

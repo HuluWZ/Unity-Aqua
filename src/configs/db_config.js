@@ -1,9 +1,9 @@
 const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize("unityaqua_db", "root", "",
+const sequelize = new Sequelize("unityaqua_db1", "root", "",
   {
      host: "localhost",
-     dialect: "mysql",
+    dialect: "mysql",
      logging: false,
 });
 // unityaqua_db

@@ -13,8 +13,10 @@ router.post(
   errorHandler(VideoServices.create)
 );
 router.get("/", errorHandler(VideoServices.getAllVideo));
+router.get("/search", errorHandler(VideoServices.searchVideo));
 router.get("/:id", errorHandler(VideoServices.getVideo));
 router.delete("/", errorHandler(VideoServices.deleteVideo));
 router.put("/", errorHandler(VideoServices.updateVideo));
 router.put("/:id",errorHandler(VideoServices.inactiveVideo))
+
 module.exports = router;

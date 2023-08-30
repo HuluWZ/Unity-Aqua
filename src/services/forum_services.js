@@ -12,6 +12,7 @@ const TreatmentFramer = require("../models/treatment/treatment_farmer");
 const News = require("../models/news");
 const Book = require("../models/book");
 const uploadToCloud = require("../configs/cloudnary");
+const Sequelize = require('sequelize');
 
 const create = async (req, res) => {
   const forumTopic = await ForumTopic.findByPk(req.body.topicId);
@@ -135,6 +136,7 @@ const deleteForum = async (req, res) => {
 };
 
 const searchForum = async (req, res) => {
+  console.log("Welcome")
   const { search } = req.query;
   if (!search) return ApiResponse.error(res, "Forum ID Not Found", 400);
   let forumList = await Forum.findAll({
@@ -167,6 +169,48 @@ const searchForum = async (req, res) => {
     return ApiResponse.error(res, "Something Went Wrong", 200);
 
   return ApiResponse.success(res, editedForumList);
+};
+const searchVideo = async (req, res) => {
+  const { name } = req.query
+  if (!name ) {
+    let videosList = await Forum.findAll({where:
+    { status: "1" },
+    order: [["createdAt", "DESC"]],
+    include: [
+            {
+        model: ForumAnswer,
+        include: [
+          { model: User },
+          { model: ForumReply, include: User }
+        ],
+      },
+      User,
+      ForumTopic
+    ]});
+    return ApiResponse.success(res, videosList);
+  }
+  let videosList = await Forum.findAll({
+    where: {
+        [Sequelize.Op.or]: [
+          { title: { [Sequelize.Op.like]: `%${name}%` } },
+          { description: { [Sequelize.Op.like]: `%${name}%` } }
+        ]
+    },
+        include: [
+            {
+        model: ForumAnswer,
+        include: [
+          { model: User },
+          { model: ForumReply, include: User }
+        ],
+      },
+      User,
+      ForumTopic
+    ]
+  })
+  if (!videosList) return ApiResponse.error(res, "Something Went Wrong", 200);
+  // console.log(" Result ",videosList)
+  return ApiResponse.success(res, videosList);
 };
 
 const getAllForumTopics = async (req, res) => {
@@ -534,5 +578,6 @@ module.exports = {
   unLikeForumReply,
   createForumTopic,
   updateForumTopic,
-  getAllDetails
+  getAllDetails,
+  searchVideo
 };

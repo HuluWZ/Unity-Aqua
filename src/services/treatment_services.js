@@ -19,6 +19,7 @@ const createSector = async (req, res) => {
   return ApiResponse.success(res, sector);
 };
 const getAllSectors = async (req, res) => {
+  console.log("Welcome")
   let sectors = await Sector.findAll({
     where: { status: "1" },
   });
@@ -180,6 +181,7 @@ const getTreatments = async (req, res) => {
   return ApiResponse.success(res, treatments);
 };
 const importTreatment = async (req, res) => {
+  console.log("Welcome");
   const { treatmentId } = req.query;
   let userTreatment = await UserTreatment.findOne({
     where: {
@@ -187,7 +189,9 @@ const importTreatment = async (req, res) => {
       userId: req.body.user.id,
     },
   });
+  console.log(" User ", userTreatment);
   if (userTreatment) return ApiResponse.success(res, userTreatment);
+  const updatedProduct = await Treatment.increment('importCount', { by: 1, where: { id:treatmentId } });
 
   let newUserTreatment = await UserTreatment.create({
     treatmentId: treatmentId,
@@ -329,6 +333,26 @@ const findMyTreatments = async (req, res) => {
   return ApiResponse.success(res, treatments);
 };
 
+const getTreatmentBySector = async (req, res) => {
+  const { id } = req.params;
+  console.log(" Get Treatment from Sector ID ",id)
+  const treatmentFarmers = await Treatment.findAll({
+    include: [
+      {
+        model: Problem,
+        where:{ sectorId:id},
+        include: [Sector]
+        }
+      ]
+  });
+
+
+  if (!treatmentFarmers)
+    return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, treatmentFarmers);
+};
+
 module.exports = {
   createSector,
   getAllSectors,
@@ -351,4 +375,5 @@ module.exports = {
   getProblemByFarmer,
   createTreatmentFramer,
   findMyTreatments,
+  getTreatmentBySector
 };
