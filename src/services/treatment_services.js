@@ -169,6 +169,7 @@ const deleteTreatment = async (req, res) => {
 };
 
 const getTreatments = async (req, res) => {
+  console.log("WL")
   const { problemId } = req.params;
   let treatments = await Treatment.findAll({
     where: { status: "1", problemId: problemId },
@@ -181,7 +182,7 @@ const getTreatments = async (req, res) => {
   return ApiResponse.success(res, treatments);
 };
 const importTreatment = async (req, res) => {
-  console.log("Welcome");
+  console.log("Welcome",req.body.user.id);
   const { treatmentId } = req.query;
   let userTreatment = await UserTreatment.findOne({
     where: {
@@ -190,8 +191,9 @@ const importTreatment = async (req, res) => {
     },
   });
   console.log(" User ", userTreatment);
-  if (userTreatment) return ApiResponse.success(res, userTreatment);
-  const updatedProduct = await Treatment.increment('importCount', { by: 1, where: { id:treatmentId } });
+  if (userTreatment) return ApiResponse.error(res, "Already imported",200);
+  console.log(" Liked By User ")
+  const updatedProduct = await Treatment.increment('importCount', { by: 1, where: { id: treatmentId } });
 
   let newUserTreatment = await UserTreatment.create({
     treatmentId: treatmentId,
@@ -316,6 +318,7 @@ const getAllFarmers = async (req, res) => {
   return ApiResponse.success(res, treatmentFramer);
 };
 const findMyTreatments = async (req, res) => {
+  // console.log(req.body, "Welcome");
   let userTreatments = await UserTreatment.findAll({
     where: { status: "1", userId: req.body.user.id },
     include: [
@@ -352,6 +355,36 @@ const getTreatmentBySector = async (req, res) => {
 
   return ApiResponse.success(res, treatmentFarmers);
 };
+const getMyTreatmentBySector = async (req, res) => {
+  const { id } = req.params;
+  console.log(" Get Treatment from Sector ID ",id)
+  const treatmentFarmers = await UserTreatment.findAll({
+    include: [
+      {
+        model: Treatment,
+        include: [{
+          model: Problem,
+          where: { sectorId: id },
+          include: Sector
+        }]
+      },
+    ],
+  where: {  status: "1",userId: req.body.user.id }
+  });
+
+  let treatments = new Array();
+  treatmentFarmers.map((userTreatment) => {
+    if (userTreatment.treatment) {
+      treatments.push(userTreatment.treatment)
+    }
+  }
+  );
+
+  if (!treatments) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, treatments);
+};
+
 
 module.exports = {
   createSector,
@@ -375,5 +408,6 @@ module.exports = {
   getProblemByFarmer,
   createTreatmentFramer,
   findMyTreatments,
-  getTreatmentBySector
+  getTreatmentBySector,
+  getMyTreatmentBySector
 };

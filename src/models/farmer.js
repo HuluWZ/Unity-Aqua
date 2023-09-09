@@ -1,8 +1,9 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../configs/db_config");
+const User = require("./user");
 
-const User = sequelize.define(
-  "user",
+const Farmer = sequelize.define(
+  "farmer",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -23,25 +24,6 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-    },
-    pin: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    qualification: {
-      type: DataTypes.ENUM,
-      values: [
-        "BSc",
-        "MSc",
-        "Diploma",
-        "Phd",
-        "BA",
-        "MA",
-        "MBA",
-        "High School",
-        "No",
-      ],
-      allowNull: false,
     },
     state: {
       type: DataTypes.STRING,
@@ -119,39 +101,20 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    labName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    labImage: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    labLogo: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    labReportImage: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    labReport: {
+    cultureType: {
       type: DataTypes.ENUM,
-      values: ["Landscape", "Potrait"],
+      values: ["Fish", "Shrimp", "Both", "Poly"],
       allowNull: false,
-    },
-    role: {
-      type: DataTypes.ENUM,
-      values: ["admin", "user"],
-      defaultValue: "user",
     },
     status: {
       type: DataTypes.ENUM,
       values: ["1", "2"],
-      defaultValue: "2",
+      defaultValue: "1",
     },
   },
   { freezeTableName: true }
 );
+User.hasMany(Farmer);
+Farmer.belongsTo(User);
 
-module.exports = User;
+module.exports = Farmer;

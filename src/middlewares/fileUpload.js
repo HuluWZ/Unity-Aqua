@@ -158,6 +158,26 @@ exports.uploadMultipleImage = multer({
   name: "imageUrl2"
 }, {
   name: "imageUrl3"
-}]);
-
+  }]);
+exports.uploadMultipleLabImage = multer({
+  storage: uploadImageStorage,
+  limits: { fileSize: 1024 * 1024 * 5 },
+  fileFilter: fileFilter
+}).fields([{
+  name: "labLogo"
+}, {
+  name: "labImage"
+}, {
+  name: "labReportImage"
+  }]);
+exports.uploadAnyImage = multer({
+  storage: uploadImageStorage,
+  limits: { fileSize: 1024 * 1024 * 5 },
+  fileFilter: fileFilter
+}).any();
+exports.uploadAnyPdf = multer({
+  storage: uploadImagePdfStorage,
+  limits: { fileSize: 1024 * 1024 * 5 },
+  fileFilter: imagePdfFilter,
+}).any([{ name: "image", name: "pdf" }]);
 exports.cloudUploadTry = multer({ storage: storage }).single("image");

@@ -12,7 +12,6 @@ router.get(
 router.get(
   "/",
   verifyToken,
-  //   validate(signUpSchema)
   errorHandler(MarketServices.getAllZones)
 );
 //MARTKET
@@ -34,6 +33,10 @@ router.delete(
 );
 
 //MARKET ZONE
+router.get(
+  "/zone/all",
+  errorHandler(MarketServices.getAllMarketZone)
+);
 router.post(
   "/zone/",
   errorHandler(MarketServices.createMarketZone)
@@ -50,9 +53,35 @@ router.delete(
   "/zone/:id",
   errorHandler(MarketServices.deleteMarketZone)
 );
+
+//Market Type
 router.get(
-  "/zone/all",
-  errorHandler(MarketServices.getAllMarketZone)
+  "/type/all",
+  errorHandler(MarketServices.getAllMarketType)
+);
+router.post(
+  "/type/",
+  errorHandler(MarketServices.createMarketType)
+);
+router.put(
+  "/type/:id",
+  errorHandler(MarketServices.updateMarketType)
+);
+router.get(
+  "/type/:id",
+  errorHandler(MarketServices.getMarketType)
+);
+router.delete(
+  "/type/:id",
+  errorHandler(MarketServices.deleteMarketType)
+);
+// FIND ALL MARKET ZONE OF SPECIFIC MARKET
+router.get("/find/market/:id", errorHandler(MarketServices.findAllMarketZoneFromMarket))
+router.get("/find/zone/:id", errorHandler(MarketServices.findAllMarketTypeFromMarketZone))
+router.get("/find/type/:id", errorHandler(MarketServices.findAllMarketTypeFromMarket))
+router.get(
+  "/find/filter/:typeId/:zoneId",
+  errorHandler(MarketServices.findAllMarketTypeFromBoth)
 );
 
 module.exports = router;

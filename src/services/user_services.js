@@ -2,9 +2,20 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const ApiResponse = require("../configs/api_response");
 const SERECT_KEY = require("../helpers/constants");
+const uploadToCloud = require("../configs/cloudnary");
 
 const signUp = async (req, res) => {
   //Creating User
+    const imageUrl1 = req.files?.labLogo[0];
+    const imageUrl2 = req.files?.labImage[0];
+    const imageUrl3 = req.files?.labReportImage[0];
+    var imageUrls = []
+    const files = [imageUrl1, imageUrl2, imageUrl3];
+    for (const file of files) {
+      const { url } = await uploadToCloud(file?.filename);
+      imageUrls.push(url);
+    }
+  // console.log(" Images ",imageUrls);
   let user = await User.create({
     name: req.body.name,
     phoneNumber: req.body.phoneNumber,
@@ -14,6 +25,10 @@ const signUp = async (req, res) => {
     district: req.body.district,
     area: req.body.area,
     labName: req.body.labName,
+    labImage: imageUrls?.length == 0 ? null : imageUrls[1],
+    labLogo: imageUrls?.length == 0 ? null : imageUrls[0],
+    labReportImage: imageUrls?.length == 0 ? null : imageUrls[2],
+    labReport : req.body.labReport
   });
 
   if (user) {
@@ -31,9 +46,14 @@ const login = async (req, res) => {
   const { isAdmin } = req.query;
 
   const user = await User.findOne({
-    where: { phoneNumber: req.body.phoneNumber, pin: req.body.pin },
+    where: {
+       phoneNumber: req.body.phoneNumber, 
+       pin: req.body.pin
+      },
   });
   if (!user) return ApiResponse.error(res, "User not found", 200);
+  if (user.status =="2") return ApiResponse.error(res, "User is not Approved by Admin", 200);
+
   if (isAdmin) {
     if (user.get().role !== "admin")
       return ApiResponse.error(res, "User has no privilege", 400);
@@ -92,6 +112,20 @@ const changePassword = async (req, res) => {
   return ApiResponse.success(res, user);
 };
 
+const approveUser = async (req, res) => {
+  const { id } = req.params;
+
+  let user = await User.update(
+    {
+      status:"1",
+    },
+    { where: { id: id } }
+  );
+  if (!user) return ApiResponse.error(res, "Something Went Wrong", 400);
+
+  return ApiResponse.success(res, user);
+};
+
 const deleteUser = async (req, res) => {
   const { id } = req.params;
   if (!id)
@@ -111,5 +145,6 @@ module.exports = {
   getAllUsers,
   changeUserStatus,
   changePassword,
-  deleteUser
+  deleteUser,
+  approveUser
 };

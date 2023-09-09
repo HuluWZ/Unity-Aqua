@@ -1,7 +1,7 @@
 const express = require("express");
 const ForumServices = require("../services/forum_services");
 const router = express.Router();
-const { uploadMultipleImage } = require("../middlewares/fileUpload");
+const { uploadMultipleImage,uploadAnyImage } = require("../middlewares/fileUpload");
 
 const validate = require("../middlewares/validate");
 const errorHandler = require("../configs/error_handler_config");
@@ -55,7 +55,7 @@ router.delete(
 // LIKE AND UNLIKE FORUM
 router.get("/like", verifyToken, errorHandler(ForumServices.likeForum));
 router.delete("/like", verifyToken, errorHandler(ForumServices.unLikeForum));
-router.post("/answer", verifyToken, errorHandler(ForumServices.answerForum));
+router.post("/answer", verifyToken, uploadAnyImage,errorHandler(ForumServices.answerForum));
 
 // LIKE AND UNLIKE FORUM REPLY
 router.get(

@@ -9,6 +9,8 @@ const videoRoutes = require("./video");
 const marketRoutes = require("./market");
 const treatmentRoutes = require("./treatment");
 const topicRoutes = require("./topic");
+const farmerRoutes = require("./farmer");
+const tankRoutes = require("./tank");
 
 app.use("/api/user", userRoutes);
 app.use("/api/forum", forumRoutes);
@@ -18,6 +20,8 @@ app.use("/api/video", videoRoutes);
 app.use("/api/market", marketRoutes);
 app.use("/api/treatment", treatmentRoutes);
 app.use("/api/topic", topicRoutes);
+app.use("/api/farmer",farmerRoutes);
+app.use("/api/tank", tankRoutes);
 
 module.exports = app; 
 

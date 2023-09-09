@@ -31,7 +31,7 @@ const getAllBooks = async (req, res) => {
   let bookList = await Book.findAll({
     where: { status: "1" },
     order: [["createdAt", "DESC"]],
-    include: [{ model: Topic, as: 'topic', attributes: ['name'] }]
+    include: [{ model: Topic, as: 'topic' }]
   });
 
   if (!bookList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -64,14 +64,22 @@ const getBook = async (req, res) => {
   return ApiResponse.success(res, bookList);
 };
 const updateBook = async (req, res) => {
+  var body = req.body;
   const { id } = req.params;
+  if(req.files.length >0 ){
+   await Promise.all(req.files?.map(async(file)=>{
+      var {url} = await uploadToCloud(file?.filename)
+      if(file.fieldname == "image"){
+        body.thumbnailUrl = url
+      }
+      if (file.fieldname == "pdf") {
+          body.url = url;
+      }
+    }))
+  }
   if (!id) return ApiResponse.error(res, "Book ID Not Found", 400);
   let booksList = await Book.update(
-    {
-      title: req.body.title,
-      // thumbnailUrl: req.body.thumbnailUrl,
-      // url: req.body.url,
-    },
+    body,
     {
       where: { id: id },
     }

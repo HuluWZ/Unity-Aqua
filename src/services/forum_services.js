@@ -295,6 +295,7 @@ const getMyBookmarks = async (req, res) => {
 const getMyAnswers = async (req, res) => {
   let userAnswers = await ForumAnswer.findAll({
     where: { userId: req.body.user.id },
+    include:[{model:Forum,include:[ForumTopic,User]}],
     order: [["createdAt", "DESC"]],
   });
   if (!userAnswers) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -357,9 +358,10 @@ const getForumInfo = async (req, res) => {
 
 const bookmarkForum = async (req, res) => {
   // IF FORUM EXISTS
+  console.log(" Bookmark")
   const { forumId } = req.query;
 
-  if (!forumId) return ApiResponse.error(res, "Forum Not Found", 200);
+  if (!forumId) return ApiResponse.error(res, "Forum ID Not Found", 200);
   const forum = await Forum.findByPk(forumId);
   if (!forum) return ApiResponse.error(res, "Forum Not Found", 200);
 
@@ -368,7 +370,7 @@ const bookmarkForum = async (req, res) => {
     where: { forumId: forum.id, userId: req.body.user.id },
   });
   if (previousBoomark) return ApiResponse.success(res, previousBoomark);
-
+  console.log(" Create ");
   // CREATE NEW BOOKMARK
   let forumBoomark = await ForumBookmark.create({
     forumId: forum.id,
@@ -398,51 +400,33 @@ const unbookmarkForum = async (req, res) => {
 const answerForum = async (req, res) => {
   // IF FORUM EXISTS
   const forumId = req.body.forumId;
-  if (!forumId) return ApiResponse.error(res, "Forum Not Found", 200);
+  if (!forumId) return ApiResponse.error(res, "Forum ID Not Found", 200);
   const forum = await Forum.findByPk(forumId);
   if (!forum) return ApiResponse.error(res, "Forum Not Found", 200);
   // console.log(" All Forum : ",forum,forumId)
-  const imageUrls = new Array();
+  var imageUrls = [];
   var isNoImage = false;
-  if (!req.files) {
+  if (req.files.length == 0) {
+    console.log(req.files," No")
     isNoImage = true;
-    console.log("No Images");
   } else {
-    const { imageUrl1, imageUrl2, imageUrl3 } = req.files;
-    const files = [imageUrl1, imageUrl2, imageUrl3];
-    if (!files) return ApiResponse.error(res, "Please upload an image", 200);
-
-    for (let i = 0; i < files.length; i++) {
-      let imgFileUrl;
-
-      if (!files[i]) {
-        imgFileUrl = null;
-      } else {
-        // If does not have image mime type prevent from uploading
-        if (/^files[i]/.test(files[i].mimetype)) return res.sendStatus(400);
-        imgFileUrl = __dirname + "/answer_upload/" + Date.now() + files[i].name;
-
-        // Move the uploaded image to our upload folder
-        await files[i].mv(imgFileUrl);
-        imgFileUrl = imgFileUrl.substring(imgFileUrl.indexOf("admin"));
-        imgFileUrl = "https://" + imgFileUrl;
+    const images = req.files
+    for (const file of images) {
+        const { url } = await uploadToCloud(file?.filename); 
+        imageUrls.push(url);
       }
-
-      imageUrls.push(imgFileUrl);
-    }
   }
-
   let forumAnswer = await ForumAnswer.create({
     content: req.body.content,
     imageUrl1: isNoImage ? null : imageUrls[0],
     imageUrl2: isNoImage ? null : imageUrls[1],
     imageUrl3: isNoImage ? null : imageUrls[2],
-    userId: req.body.user.id,
+    userId: req.body.user? req.body.user.id :req.user.id,
     forumId: forum.id,
   });
 
   if (!forumAnswer) return ApiResponse.error(res, "Something went wrong", 200);
-  return ApiResponse.success(res, forumAnswer);
+  return ApiResponse.success(res,forumAnswer);
 };
 
 const replyAnswerForum = async (req, res) => {

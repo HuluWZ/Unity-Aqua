@@ -5,10 +5,15 @@ const router = express.Router();
 const validate = require("../middlewares/validate");
 const errorHandler = require("../configs/error_handler_config");
 const verifyToken = require("../middlewares/verify_token");
+const {
+  uploadMultipleImage,
+  uploadMultipleLabImage,
+} = require("../middlewares/fileUpload");
 
 
 router.post(
   "/signup",
+  uploadMultipleLabImage,
   errorHandler(UserServices.signUp)
 );
 router.post("/login", errorHandler(UserServices.login));
@@ -21,6 +26,8 @@ router.post(
   verifyToken,
   errorHandler(UserServices.changeUserStatus)
 );
+router.put("/approve/:id", errorHandler(UserServices.approveUser));
+
 // router.post(
 //   "/transaction",
 //   verifyToken,

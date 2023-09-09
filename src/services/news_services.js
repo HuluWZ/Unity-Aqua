@@ -54,12 +54,15 @@ const deleteNews = async (req, res) => {
 
 const updateNews = async (req, res) => {
   const { id } = req.params;
+  var {body} = req
+  if(req?.files?.length>0){
+    const { url } = await uploadToCloud(req.files[0]?.filename); 
+    body.thumbnail = url
+  }
+
   if (!id) return ApiResponse.error(res, "News ID Not Found", 400);
   let newsList = await News.update(
-    {
-      title: req.body.title,
-      description: req.body.description,
-    },
+    body,
     {
       where: { id: id },
     }
@@ -67,7 +70,7 @@ const updateNews = async (req, res) => {
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
 
-  return ApiResponse.success(res, newsList);
+  return ApiResponse.success(res,newsList);
 };
 const searchNews = async (req, res) => {
   console.log(" NEws Called ")

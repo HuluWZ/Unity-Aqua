@@ -36,8 +36,14 @@ router.get(
   verifyToken,
   errorHandler(TreatmentService.importTreatment)
 );
+router.get("/my/sector/:id",
+verifyToken,
+errorHandler(TreatmentService.getMyTreatmentBySector)
+);
+router.get("/my",
+verifyToken,
+errorHandler(TreatmentService.findMyTreatments));
 router.get("/:problemId", errorHandler(TreatmentService.getTreatments));
-router.get("/my", verifyToken, errorHandler(TreatmentService.findMyTreatments));
 router.post(
   "/farmer",
   verifyToken,
