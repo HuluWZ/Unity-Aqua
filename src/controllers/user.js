@@ -19,6 +19,7 @@ router.post(
 router.post("/login", errorHandler(UserServices.login));
 // router.get("/verify", errorHandler(UserServices.verifyOtp));
 router.get("/", verifyToken, errorHandler(UserServices.userProfile));
+router.get("/get/:id", errorHandler(UserServices.findUser));
 router.post("/forgot", errorHandler(UserServices.changePassword));
 router.get("/all", verifyToken, errorHandler(UserServices.getAllUsers));
 router.post(

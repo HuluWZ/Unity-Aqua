@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../configs/db_config");
 const User = require("./user");
+const {State,District} = require("./stateDistrict");
 
 const Farmer = sequelize.define(
   "farmer",
@@ -25,78 +26,6 @@ const Farmer = sequelize.define(
       allowNull: false,
       unique: true,
     },
-    state: {
-      type: DataTypes.STRING,
-      values: [
-        "Andhra Pradesh",
-        "Arunachal Pradesh",
-        "Assam",
-        "Bihar",
-        "Chhattisgarh",
-        "Goa",
-        "Gujarat",
-        "Haryana",
-        "Himachal Prade",
-        "Jharkhand",
-        "Karnataka",
-        "Kerala",
-        "Madhya Pradesh",
-        "Maharashtra",
-        "Manipur",
-        "Mizoram",
-        "Meghalaya",
-        "Nagaland",
-        "Odisha",
-        "Punjab",
-        "Sikkim",
-        "Rajasthan",
-        "Tamil Nadu",
-        "Telangana",
-        "Tripura",
-        "Uttarakhand",
-        "West Bengal",
-        "Una",
-        "Bagalkat",
-        "North Delhi",
-        "East Delhi",
-        "West Delhi",
-        "South Delhi",
-        "South West Delhi",
-        "New Delhi",
-      ],
-      allowNull: false,
-    },
-    district: {
-      type: DataTypes.ENUM,
-      values: [
-        "Mumbai",
-        "Delhi",
-        "Kolkata",
-        "Chennai",
-        "Bengaluru",
-        "Hyderabad",
-        "Pune",
-        "Jaipur",
-        "Lucknow",
-        "Ahmedabad",
-        "Chandigarh",
-        "Bhopal",
-        "Kanpur",
-        "Nagpur",
-        "Patna",
-        "Kochi",
-        "Indore",
-        "Thiruvananthapuram",
-        "Coimbatore",
-        "Guwahati",
-        "Varanasi",
-        "Visakhapatnam",
-        "Agra",
-        "Nashik",
-        "Amritsar",
-      ],
-      allowNull: false,
-    },
     area: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -115,6 +44,11 @@ const Farmer = sequelize.define(
   { freezeTableName: true }
 );
 User.hasMany(Farmer);
+State.hasMany(Farmer);
+District.hasMany(Farmer);
+
 Farmer.belongsTo(User);
+Farmer.belongsTo(State);
+Farmer.belongsTo(District);
 
 module.exports = Farmer;

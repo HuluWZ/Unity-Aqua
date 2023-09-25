@@ -4,6 +4,9 @@ const Farmer = require("../models/farmer");
 const ApiResponse = require("../configs/api_response");
 const SERECT_KEY = require("../helpers/constants");
 const uploadToCloud = require("../configs/cloudnary");
+const User = require("../models/user");
+const {State,District} = require("../models/stateDistrict");
+const sequelize = require("sequelize");
 
 const createTank = async (req, res) => {
   //Creating User
@@ -39,6 +42,7 @@ const findFarmerTankFromPhone = async (req, res) => {
 
   let farmer = await Farmer.findOne({
     where: { phoneNumber: phone },
+    include:[User,State,District]
   });
 
   if(!farmer)   return ApiResponse.error(res, "No Farmer with This Phone Found", 400);
@@ -51,21 +55,56 @@ const findFarmerTankFromPhone = async (req, res) => {
 };
 const findTankAll = async (req, res) => {
   let user = await Tank.findAll({
-    include: Farmer,
+    include: [
+      {
+        model:Farmer,
+        include:[User,State,District]
+      }],
   });
 
   return ApiResponse.success(res, user);
 };
 const findTank = async (req, res) => {
   const {id} = req.params
-  let user = await Tank.findByPk(id);
+  let user = await Tank.findByPk(id, {
+    include: [{ model: Farmer, include: [User, State, District] }],
+  });
   if (!user) return ApiResponse.error(res, "No Tank with This Id Found", 400);
   return ApiResponse.success(res, user);
+};
+const findTankFarmer = async (req, res) => {
+  const { id } = req.params;
+  console.log(id)
+  let userFish = await Tank.findAll({
+    where: {
+      farmerId: id,
+      cultureType: "Fish",
+    },
+    include: Farmer,
+  });
+   let userShrimp = await Tank.findAll({
+     where: {
+       farmerId: id,
+       cultureType: "Shrimp",
+     },
+     include: Farmer,
+   });
+    let userPoly = await Tank.findAll({
+      where: {
+        farmerId: id,
+        cultureType : "Poly"
+      },
+      include: Farmer,
+    });
+  if (!id) return ApiResponse.error(res, "No Tank with This Id Found", 400);
+  return ApiResponse.success(res, 
+    {fish:userFish,shrimp:userShrimp,poly:userPoly});
 };
 module.exports = {
   createTank,
   deleteTank,
   findTankAll,
+  findTankFarmer,
   findTank,
   findFarmerTankFromPhone,
 };

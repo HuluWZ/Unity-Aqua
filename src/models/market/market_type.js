@@ -20,14 +20,6 @@ const MarketType = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    count: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    rate: {
-      type: DataTypes.DOUBLE,
-      allowNull: false,
-    },
     status: {
       type: DataTypes.ENUM,
       values: ["1", "2"],

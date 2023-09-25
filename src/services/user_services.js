@@ -3,8 +3,11 @@ const User = require("../models/user");
 const ApiResponse = require("../configs/api_response");
 const SERECT_KEY = require("../helpers/constants");
 const uploadToCloud = require("../configs/cloudnary");
+const { State, District } = require("../models/stateDistrict");
 
 const signUp = async (req, res) => {
+
+  console.log(req.body);
   //Creating User
     const imageUrl1 = req.files?.labLogo[0];
     const imageUrl2 = req.files?.labImage[0];
@@ -21,8 +24,8 @@ const signUp = async (req, res) => {
     phoneNumber: req.body.phoneNumber,
     qualification: req.body.qualification,
     pin: req.body.pin,
-    state: req.body.state,
-    district: req.body.district,
+    stateId: req.body.state,
+    districtId: req.body.district,
     area: req.body.area,
     labName: req.body.labName,
     labImage: imageUrls?.length == 0 ? null : imageUrls[1],
@@ -76,6 +79,7 @@ const userProfile = async (req, res) => {
 const getAllUsers = async (req, res) => {
   let users = await User.findAll({
     order: [["createdAt", "DESC"]],
+    include:[State]
   });
   if (!users) return ApiResponse.error(res, "Something Went Wrong", 200);
 
@@ -138,6 +142,15 @@ const deleteUser = async (req, res) => {
 
   return ApiResponse.success(res, user);
 };
+const findUser = async (req, res) => {
+  const {id} = req.params;
+  let user = await User.findByPk(id,{
+    include:[State,District]
+  });
+  if (!user) return ApiResponse.error(res, "No User with this id", 404);
+
+  return ApiResponse.success(res, user);
+};
 module.exports = {
   signUp,
   login,
@@ -146,5 +159,6 @@ module.exports = {
   changeUserStatus,
   changePassword,
   deleteUser,
-  approveUser
+  approveUser,
+  findUser,
 };

@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../configs/db_config");
+const { State, District } = require("./stateDistrict");
 
 const User = sequelize.define(
   "user",
@@ -43,47 +44,47 @@ const User = sequelize.define(
       ],
       allowNull: false,
     },
-    state: {
-      type: DataTypes.STRING,
-      values: [
-        "Andhra Pradesh",
-        "Arunachal Pradesh",
-        "Assam",
-        "Bihar",
-        "Chhattisgarh",
-        "Goa",
-        "Gujarat",
-        "Haryana",
-        "Himachal Prade",
-        "Jharkhand",
-        "Karnataka",
-        "Kerala",
-        "Madhya Pradesh",
-        "Maharashtra",
-        "Manipur",
-        "Mizoram",
-        "Meghalaya",
-        "Nagaland",
-        "Odisha",
-        "Punjab",
-        "Sikkim",
-        "Rajasthan",
-        "Tamil Nadu",
-        "Telangana",
-        "Tripura",
-        "Uttarakhand",
-        "West Bengal",
-        "Una",
-        "Bagalkat",
-        "North Delhi",
-        "East Delhi",
-        "West Delhi",
-        "South Delhi",
-        "South West Delhi",
-        "New Delhi",
-      ],
-      allowNull: false,
-    },
+    // state: {
+    //   type: DataTypes.STRING,
+    //   values: [
+    //     "Andhra Pradesh",
+    //     "Arunachal Pradesh",
+    //     "Assam",
+    //     "Bihar",
+    //     "Chhattisgarh",
+    //     "Goa",
+    //     "Gujarat",
+    //     "Haryana",
+    //     "Himachal Prade",
+    //     "Jharkhand",
+    //     "Karnataka",
+    //     "Kerala",
+    //     "Madhya Pradesh",
+    //     "Maharashtra",
+    //     "Manipur",
+    //     "Mizoram",
+    //     "Meghalaya",
+    //     "Nagaland",
+    //     "Odisha",
+    //     "Punjab",
+    //     "Sikkim",
+    //     "Rajasthan",
+    //     "Tamil Nadu",
+    //     "Telangana",
+    //     "Tripura",
+    //     "Uttarakhand",
+    //     "West Bengal",
+    //     "Una",
+    //     "Bagalkat",
+    //     "North Delhi",
+    //     "East Delhi",
+    //     "West Delhi",
+    //     "South Delhi",
+    //     "South West Delhi",
+    //     "New Delhi",
+    //   ],
+    //   allowNull: false,
+    // },
     district: {
       type: DataTypes.ENUM,
       values: [
@@ -153,5 +154,8 @@ const User = sequelize.define(
   },
   { freezeTableName: true }
 );
+
+State.hasMany(User);
+User.belongsTo(State);
 
 module.exports = User;

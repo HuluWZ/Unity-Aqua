@@ -11,6 +11,8 @@ const treatmentRoutes = require("./treatment");
 const topicRoutes = require("./topic");
 const farmerRoutes = require("./farmer");
 const tankRoutes = require("./tank");
+const stateDistrictRoutes = require("./stateDistrict");
+
 
 app.use("/api/user", userRoutes);
 app.use("/api/forum", forumRoutes);
@@ -22,6 +24,7 @@ app.use("/api/treatment", treatmentRoutes);
 app.use("/api/topic", topicRoutes);
 app.use("/api/farmer",farmerRoutes);
 app.use("/api/tank", tankRoutes);
+app.use("/api", stateDistrictRoutes);
 
 module.exports = app; 
 

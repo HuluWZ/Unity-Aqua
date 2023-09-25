@@ -7,6 +7,7 @@ const errorHandler = require("../configs/error_handler_config");
 const verifyToken = require("../middlewares/verify_token");
 
 router.post("/", errorHandler(TankServices.createTank));
+router.get("/farmer/:id", errorHandler(TankServices.findTankFarmer));
 router.get("/find/:id", errorHandler(TankServices.findTank));
 router.get("/", errorHandler(TankServices.findTankAll));
 router.get("/:phone", errorHandler(TankServices.findFarmerTankFromPhone));
