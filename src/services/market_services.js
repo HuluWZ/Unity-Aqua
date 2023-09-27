@@ -3,6 +3,7 @@ const MarketType = require("../models/market/market_type");
 const MarketZone = require("../models/market/market_zone");
 const Market = require("../models/market/market");
 const MarketTypeData = require("../models/market/market_type_data");
+const Sequelize = require("sequelize");
 
 const fetchMarketStatus = async (market) => {
   try {
@@ -79,6 +80,7 @@ const createMarketZone = async (req, res) => {
   return ApiResponse.success(res, zones);
 };
 const createMarketType = async (req, res) => {
+  console.log(req.body);
   const { name,marketZoneId,data } = req.body;
   // const existingMarketType = await MarketType.findOne({
   //   where: {
@@ -95,6 +97,7 @@ const createMarketType = async (req, res) => {
     name,
     marketZoneId
   });
+  console.log(" Zones ",zones,data);
   var id = zones?.id
   const marketData = data.map((obj) => ({
     ...obj,
@@ -187,7 +190,7 @@ const getMarketType = async (req, res) => {
     },
     include:MarketType
   })
-   market.status = marketTypes
+   market.status =  marketTypes
    return ApiResponse.success(res, market);
 };
 
@@ -213,9 +216,9 @@ const getAllMarketType = async (req, res) => {
     include: [{ model: MarketZone, include: Market }],
     order: [["createdAt", "DESC"]],
   });
-  if (!market) {
-      return res.status(404).json({ error: 'Market Type not found' });
-  }
+  // if (!market) {
+  //     return res.status(404).json({ error: 'Market Type not found' });
+  // }
   for (const mark of market) {
     await fetchMarketStatus(mark);
   }
@@ -234,8 +237,8 @@ const deleteMarket = async (req, res) => {
   return ApiResponse.success(res, "Deleted Sucessfully");
 };
 const deleteMarketZone = async (req, res) => {
-  const { id } = req.params;
-  const  updatedRows = await MarketZone.destroy(
+const { id } = req.params;
+const  updatedRows = await MarketZone.destroy(
       { where: { id } }
     );
 
@@ -254,8 +257,7 @@ const deleteMarketType = async (req, res) => {
     if (updatedRows === 0) {
       return res.status(404).json({ error: 'Market Type not found' });
     }
-  const updatedRowss = await MarketTypeData
-  .destroy({ where: { marketTypeId:id } });
+  const updatedRowss = await MarketTypeData.destroy({ where: { marketTypeId:id } });
 
   return ApiResponse.success(res, "Deleted Sucessfully");
 };
@@ -265,9 +267,9 @@ const deleteMarketType = async (req, res) => {
 const findAllMarketZoneFromMarket = async (req, res) => {
   const { id } = req.params;
   const market = await MarketZone.findAll({
-    where: {marketId:id},
-  }
- );
+    where: { marketId: id },
+    order: [["createdAt", "DESC"]],
+  });
     if (!market) {
       return res.status(404).json({ error: 'No Market Zone with this Market ID not found' });
     }
@@ -276,13 +278,26 @@ const findAllMarketZoneFromMarket = async (req, res) => {
 };
 const findAllMarketTypeFromMarketZone = async (req, res) => {
   const { id } = req.params;
+  const {date} = req.query;
   const market = await MarketType.findAll({
-    where: {marketZoneId:id},
-    include: [{ model: MarketZone, include:Market }]
-  }
- );
-    if (!market) {
+    where: {
+      marketZoneId: id,
+      createdAt: {
+        [Sequelize.Op.between]: [
+          new Date(date),
+          new Date(date + " 23:59:59"),
+        ],
+      },
+    },
+    include: [{ model: MarketZone, include: Market }],
+    order: [["createdAt", "DESC"]],
+  });
+    
+  if (!market) {
       return res.status(404).json({ error: 'No Market Type with this Market  Zone ID not found' });
+  }
+    for (const mark of market) {
+      await fetchMarketStatus(mark);
     }
 
   return ApiResponse.success(res, market);
@@ -290,16 +305,15 @@ const findAllMarketTypeFromMarketZone = async (req, res) => {
 const findAllMarketTypeFromMarket = async (req, res) => {
   const { id } = req.params;
   const market = await MarketType.findAll({
-      include: [
+    include: [
       {
         model: MarketZone,
-        where:{ marketId:id},
-        include: [Market]
-        }
-      ]
-
-  }
- );
+        where: { marketId: id },
+        include: [Market],
+      },
+    ],
+    order: [["createdAt", "DESC"]],
+  });
     if (!market) {
       return res.status(404).json({ error: 'No Market Type with this Market  ID not found' });
     }
@@ -311,8 +325,9 @@ const findAllMarketTypeFromBoth = async (req, res) => {
   const { zoneId,typeId } = req.params;
   console.log(" Zone Id and TypeID ",zoneId,typeId);
   const market = await MarketType.findAll({
-    where: { marketZoneId: zoneId,id: typeId },
+    where: { marketZoneId: zoneId, id: typeId },
     include: [{ model: MarketZone, include: Market }],
+    order: [["createdAt", "DESC"]],
   });
   
   if (!market) {

@@ -44,6 +44,7 @@ const signUp = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  console.log(" USERRR ",req.body)
   await User.sync({ alter: true });
   // await ForumBookmark.sync();
   const { isAdmin } = req.query;
@@ -54,6 +55,7 @@ const login = async (req, res) => {
        pin: req.body.pin
       },
   });
+  console.log(user);
   if (!user) return ApiResponse.error(res, "User not found", 200);
   if (user.status =="2") return ApiResponse.error(res, "User is not Approved by Admin", 200);
 

@@ -11,17 +11,13 @@ const {
 } = require("../middlewares/fileUpload");
 
 
-router.post(
-  "/signup",
-  uploadMultipleLabImage,
-  errorHandler(UserServices.signUp)
-);
+router.post("/signup",uploadMultipleLabImage,errorHandler(UserServices.signUp));
 router.post("/login", errorHandler(UserServices.login));
 // router.get("/verify", errorHandler(UserServices.verifyOtp));
 router.get("/", verifyToken, errorHandler(UserServices.userProfile));
 router.get("/get/:id", errorHandler(UserServices.findUser));
 router.post("/forgot", errorHandler(UserServices.changePassword));
-router.get("/all", verifyToken, errorHandler(UserServices.getAllUsers));
+router.get("/all", errorHandler(UserServices.getAllUsers));
 router.post(
   "/change",
   verifyToken,
