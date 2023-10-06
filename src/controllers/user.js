@@ -23,7 +23,7 @@ router.post(
   verifyToken,
   errorHandler(UserServices.changeUserStatus)
 );
-router.put("/approve/:id", errorHandler(UserServices.approveUser));
+router.put("/approve/:id",verifyToken, errorHandler(UserServices.approveUser));
 
 // router.post(
 //   "/transaction",

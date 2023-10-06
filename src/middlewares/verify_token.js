@@ -5,6 +5,7 @@ const User = require("../models/user");
 
 const verifyToken = async (req, res, next) => {
   const { authtoken } = req.headers;
+  console.log(req.headers);
   const token = authtoken;
   if (!token) return ApiResponse.error(res, "No User Token", 400);
   try {

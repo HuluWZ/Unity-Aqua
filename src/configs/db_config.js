@@ -3,9 +3,9 @@ const { Sequelize } = require("sequelize");
 const sequelize = new Sequelize("unityaqua_db1", "root", "",
   {
      host: "localhost",
-    dialect: "mysql",
+     dialect: "mysql",
      logging: false,
-    //  port:4306
+     port: 4306
 });
 // unityaqua_db
 // unityaqua_user
