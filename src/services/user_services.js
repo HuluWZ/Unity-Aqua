@@ -81,7 +81,13 @@ const userProfile = async (req, res) => {
 const getAllUsers = async (req, res) => {
   let users = await User.findAll({
     order: [["createdAt", "DESC"]],
-    include:[State]
+    include: [
+      {
+        model: User, // Include the approver (User) model
+        as: "approver", // Use the alias you defined in the User model
+        attributes: ["name","phoneNumber"], // Specify the attributes you want to include
+      },
+    ],
   });
   if (!users) return ApiResponse.error(res, "Something Went Wrong", 200);
 
@@ -120,12 +126,18 @@ const changePassword = async (req, res) => {
 
 const approveUser = async (req, res) => {
   const { id } = req.params;
-
+  const usr  = req.body?.user
+  const data = {
+    status: "1",
+    approvedDate: new Date(),
+    approvedBy: usr?.id,
+  };
+  console.log(" User ",usr,data);
   let user = await User.update(
-    {
-      status:"1",
-    },
-    { where: { id: id } }
+    data,
+    { 
+      where: { id: id } 
+    }
   );
   if (!user) return ApiResponse.error(res, "Something Went Wrong", 400);
 
@@ -146,8 +158,14 @@ const deleteUser = async (req, res) => {
 };
 const findUser = async (req, res) => {
   const {id} = req.params;
-  let user = await User.findByPk(id,{
-    include:[State,District]
+  let user = await User.findByPk(id, {
+    include: [
+      {
+        model: User, // Include the approver (User) model
+        as: "approver", // Use the alias you defined in the User model
+        attributes: ["name", "phoneNumber"], // Specify the attributes you want to include
+      },
+    ],
   });
   if (!user) return ApiResponse.error(res, "No User with this id", 404);
 
