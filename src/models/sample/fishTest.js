@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../configs/db_config");
-const Tank = require("./tank");
+const sequelize = require("../../configs/db_config");
+const Tank = require("../tank");
 
 const FishTest = sequelize.define(
   "fishTest",
