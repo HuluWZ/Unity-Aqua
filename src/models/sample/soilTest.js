@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../configs/db_config");
-const Tank = require("./tank");
+const sequelize = require("../../configs/db_config");
+const Tank = require("../tank");
 
 const SoilTest = sequelize.define(
   "soilTest",
@@ -17,7 +17,7 @@ const SoilTest = sequelize.define(
     },
     soilNature: {
       type: DataTypes.ENUM,
-      values: ["Heavy","Medium","Light"]
+      values: ["Heavy","Medium","Light"],
       allowNull: false,
     },
     soilPh: {
@@ -58,7 +58,7 @@ const SoilTest = sequelize.define(
     },
     limeTest: {
       type: DataTypes.ENUM,
-      values:["Light","Medium","Heavy"]
+      values:["Light","Medium","Heavy"],
       allowNull: false,
     },
     status: {
