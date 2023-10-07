@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../configs/db_config");
-const Tank = require("./tank");
+const sequelize = require("../../configs/db_config");
+const Tank = require("../tank");
 
 const FeedTest = sequelize.define(
   "feedTest",
@@ -12,23 +12,23 @@ const FeedTest = sequelize.define(
       allowNull: false,
     },
     fat: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: false,
     },
     protein: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: false,
     },
     moisture: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: false,
     },
     ash: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: false,
     },
     fiber: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL,
       allowNull: false,
     },
     status: {
