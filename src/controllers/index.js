@@ -13,6 +13,8 @@ const farmerRoutes = require("./farmer");
 const tankRoutes = require("./tank");
 const stateDistrictRoutes = require("./stateDistrict");
 const fishTestRoutes = require("./fishTest");
+const waterTestRoutes = require("./waterTest");
+const pcrTestRoutes = require("./pcrTest");
 
 
 app.use("/api/user", userRoutes);
@@ -24,8 +26,11 @@ app.use("/api/market", marketRoutes);
 app.use("/api/treatment", treatmentRoutes);
 app.use("/api/topic", topicRoutes);
 app.use("/api/farmer",farmerRoutes);
+// Sample Registration
 app.use("/api/tank", tankRoutes);
 app.use("/api/fish", fishTestRoutes);
+app.use("/api/water", waterTestRoutes);
+app.use("/api/pcr", pcrTestRoutes);
 app.use("/api", stateDistrictRoutes);
 
 module.exports = app; 

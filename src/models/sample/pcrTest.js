@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../configs/db_config");
-const Tank = require("./tank");
+const sequelize = require("../../configs/db_config");
+const Tank = require("../tank");
 
 const PCRTest = sequelize.define(
   "pcrTest",
@@ -13,7 +13,7 @@ const PCRTest = sequelize.define(
     },
     pcr: {
       type: DataTypes.ENUM,
-      values: ["Positive","Negative"]
+      values: ["Positive","Negative"],
       allowNull: false,
     },
     status: {
