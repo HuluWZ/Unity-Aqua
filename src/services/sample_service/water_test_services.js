@@ -1,51 +1,51 @@
 const ApiResponse = require("../../configs/api_response");
-const FishTest = require("../../models/sample/fishTest");
+const WaterTest = require("../../models/sample/waterTest");
 const Tank = require("../../models/tank");
 
-const createFish = async (req, res) => {
-  const {body} = req;
-  let news = await FishTest.create(body);
+const createWater = async (req, res) => {
+  const { body } = req;
+  let news = await WaterTest.create(body);
 
   if (!news) return ApiResponse.error(res, "Something Went Wrong", 200);
 
   return ApiResponse.success(res, news);
 };
 
-const getAllFish = async (req, res) => {
-  let newsList = await FishTest.findAll({
+const getAllWater = async (req, res) => {
+  let newsList = await WaterTest.findAll({
     order: [["createdAt", "DESC"]],
-    include:Tank
+    include: Tank,
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
 
   return ApiResponse.success(res, newsList);
 };
-const getFish = async (req, res) => {
+const getWater = async (req, res) => {
   const { id } = req.params;
-  let newsList = await FishTest.findByPk(id,{include:Tank});
+  let newsList = await WaterTest.findByPk(id, { include: Tank });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
 
   return ApiResponse.success(res, newsList);
 };
 
-const deleteFish = async (req, res) => {
+const deleteWater = async (req, res) => {
   const { id } = req.params;
   if (!id) return ApiResponse.error(res, "News ID Not Found", 400);
-  let newsList = await FishTest.destroy({ where: { id: id } });
+  let newsList = await WaterTest.destroy({ where: { id: id } });
 
   if (newsList == 0) return ApiResponse.error(res, "Something Went Wrong", 200);
 
   return ApiResponse.success(res, newsList);
 };
 
-const updateFish = async (req, res) => {
+const updateWater = async (req, res) => {
   const { id } = req.params;
   var { body } = req;
 
   if (!id) return ApiResponse.error(res, "News ID Not Found", 400);
-  let newsList = await FishTest.update(body, {
+  let newsList = await WaterTest.update(body, {
     where: { id: id },
   });
 
@@ -55,9 +55,9 @@ const updateFish = async (req, res) => {
 };
 
 module.exports = {
-  createFish,
-  getAllFish,
-  getFish,
-  deleteFish,
-  updateFish,
+  createWater,
+  getAllWater,
+  getWater,
+  deleteWater,
+  updateWater,
 };
