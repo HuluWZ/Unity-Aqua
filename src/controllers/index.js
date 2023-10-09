@@ -17,6 +17,7 @@ const waterTestRoutes = require("./waterTest");
 const pcrTestRoutes = require("./pcrTest");
 const soilTestRoutes = require("./soilTest");
 const feedTestRoutes = require("./feedTest");
+const shrimpTestRoutes = require("./shrimpTest");
 
 
 app.use("/api/user", userRoutes);
@@ -35,7 +36,7 @@ app.use("/api/water", waterTestRoutes);
 app.use("/api/pcr", pcrTestRoutes);
 app.use("/api/feed", feedTestRoutes);
 app.use("/api/soil", soilTestRoutes);
-
+app.use("/api/shrimp", shrimpTestRoutes);
 app.use("/api", stateDistrictRoutes);
 
 module.exports = app; 
