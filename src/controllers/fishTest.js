@@ -6,9 +6,10 @@ const errorHandler = require("../configs/error_handler_config");
 
 // Fish Test
 router.get("/", errorHandler(FishTestService.getAllFish));
+router.get("/complex/", errorHandler(FishTestService.getAllComplexFish));
+router.get("/:id", errorHandler(FishTestService.getFish));
 router.post("/", errorHandler(FishTestService.createFish));
 router.put("/:id", errorHandler(FishTestService.updateFish));
-router.get("/:id", errorHandler(FishTestService.getFish));
 router.delete("/:id", errorHandler(FishTestService.deleteFish));
 
 module.exports = router;

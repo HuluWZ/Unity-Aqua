@@ -8,6 +8,7 @@ const errorHandler = require("../configs/error_handler_config");
 router.get("/", errorHandler(PCRTestService.getAllPCR));
 router.post("/", errorHandler(PCRTestService.createPCR));
 router.put("/:id", errorHandler(PCRTestService.updatePCR));
+router.get("/complex", errorHandler(PCRTestService.getAllComplexPCR));
 router.get("/:id", errorHandler(PCRTestService.getPCR));
 router.delete("/:id", errorHandler(PCRTestService.deletePCR));
 

@@ -1,6 +1,8 @@
 const ApiResponse = require("../../configs/api_response");
 const SoilTest = require("../../models/sample/soilTest");
 const Tank = require("../../models/tank");
+const Farmer = require("../../models/farmer");
+const User = require("../../models/user");
 
 const createSoil = async (req, res) => {
   const { body } = req;
@@ -14,7 +16,7 @@ const createSoil = async (req, res) => {
 const getAllSoil = async (req, res) => {
   let newsList = await SoilTest.findAll({
     order: [["createdAt", "DESC"]],
-    include: Tank,
+    include: [{model:Tank,include:[{model:Farmer,include:User}]}],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -23,7 +25,9 @@ const getAllSoil = async (req, res) => {
 };
 const getSoil = async (req, res) => {
   const { id } = req.params;
-  let newsList = await SoilTest.findByPk(id, { include: Tank });
+  let newsList = await SoilTest.findByPk(id, {
+    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+  });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
 

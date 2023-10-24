@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../configs/db_config");
-const Tank = require("./tank");
+const sequelize = require("../../configs/db_config");
+const Tank = require("../tank");
 
 const PlanktonTest = sequelize.define(
   "planktonTest",
@@ -11,37 +11,92 @@ const PlanktonTest = sequelize.define(
       autoIncrement: true,
       allowNull: false,
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    useful_Chlorella: {
+      type: DataTypes.DOUBLE,
     },
-    type: {
-      type: DataTypes.ENUM,
-      values: ["Useful", "Harmful"],
-      allowNull: false,
+    useful_Oocysts: {
+      type: DataTypes.DOUBLE,
     },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: false,
+    useful_Scenedesmus: {
+      type: DataTypes.DOUBLE,
     },
-    percentage: {
-      type: DataTypes.INTEGER,
+    useful_Eudorina: {
+      type: DataTypes.DOUBLE,
     },
-    percentageStar: {
-      type: DataTypes.ENUM,
-      values: ["*","**","***"]
+    useful_Tetrasolmis: {
+      type: DataTypes.DOUBLE,
     },
-    planktonType: {
-      type: DataTypes.ENUM,
-      values: [
-        "Green Algea",
-        "Diatoms",
-        "Zooplankton",
-        "Green Blue Algea",
-        "Protozoa",
-        "Dinoflagallate",
-      ],
-      allowNull: false,
+    useful_Eutreptia: {
+      type: DataTypes.DOUBLE,
+    },
+    useful_Phacus: {
+      type: DataTypes.DOUBLE,
+    },
+    useful_Spriulina: {
+      type: DataTypes.DOUBLE,
+    },
+    useful_Chaetoceros: {
+      type: DataTypes.DOUBLE,
+    },
+    useful_Skeletonema: {
+      type: DataTypes.DOUBLE,
+    },
+    useful_Cyclotella: {
+      type: DataTypes.DOUBLE,
+    },
+    useful_Thalassiosira: {
+      type: DataTypes.DOUBLE,
+    },
+    useful_Copepod: {
+      type: DataTypes.DOUBLE,
+    },
+    useful_Rotifer: {
+      type: DataTypes.DOUBLE,
+    },
+    useful_Nauplius: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Noctiluca: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Ceratium: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Dinophysis: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Zoothamnium: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Favella: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Vorticella: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Gregarina: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Anabaena: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Oscillatoria: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Microcystis: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Coscinodiscus: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Nitzschia: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Navicula: {
+      type: DataTypes.DOUBLE,
+    },
+    harmful_Pleurosigma: {
+      type: DataTypes.DOUBLE,
     },
     status: {
       type: DataTypes.ENUM,

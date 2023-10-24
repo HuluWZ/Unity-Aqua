@@ -6,6 +6,7 @@ const errorHandler = require("../configs/error_handler_config");
 
 // Fish Test
 router.get("/", errorHandler(WaterTestService.getAllWater));
+router.get("/complex/", errorHandler(WaterTestService.getAllComplexWater));
 router.post("/", errorHandler(WaterTestService.createWater));
 router.put("/:id", errorHandler(WaterTestService.updateWater));
 router.get("/:id", errorHandler(WaterTestService.getWater));

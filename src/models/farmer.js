@@ -44,11 +44,11 @@ const Farmer = sequelize.define(
   { freezeTableName: true }
 );
 User.hasMany(Farmer);
-State.hasMany(Farmer);
-District.hasMany(Farmer);
+// State.hasMany(Farmer);
+// District.hasMany(Farmer);
 
 Farmer.belongsTo(User);
-Farmer.belongsTo(State);
-Farmer.belongsTo(District);
+// Farmer.belongsTo(State);
+// Farmer.belongsTo(District);
 
 module.exports = Farmer;

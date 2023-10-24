@@ -1,6 +1,8 @@
 const ApiResponse = require("../../configs/api_response");
 const ShrimpTest = require("../../models/sample/shrimpTest");
 const Tank = require("../../models/Tank");
+const Farmer = require("../../models/farmer");
+const User = require("../../models/user");
 
 const createShrimp = async (req, res) => {
   const { body } = req;
@@ -14,7 +16,7 @@ const createShrimp = async (req, res) => {
 const getAllShrimp = async (req, res) => {
   let newsList = await ShrimpTest.findAll({
     order: [["createdAt", "DESC"]],
-    include: Tank,
+    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -23,7 +25,9 @@ const getAllShrimp = async (req, res) => {
 };
 const getShrimp = async (req, res) => {
   const { id } = req.params;
-  let newsList = await ShrimpTest.findByPk(id, { include: Tank });
+  let newsList = await ShrimpTest.findByPk(id, { 
+    include: [{model:Tank,include:[{model:Farmer,include:User}]}],
+  });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
 

@@ -17,6 +17,9 @@ const WaterTest = sequelize.define(
     temprature: {
       type: DataTypes.DECIMAL,
     },
+    salinity: {
+      type: DataTypes.DECIMAL,
+    },
     co3: {
       type: DataTypes.DECIMAL,
     },

@@ -34,7 +34,7 @@ const FishTest = sequelize.define(
     eyes: {
       type: DataTypes.ENUM,
       values: ["Normal", "Popped Out", "Deep"],
-      defaultValue: "1",
+      allowNull: false,
     },
     finsColour: {
       type: DataTypes.ENUM,

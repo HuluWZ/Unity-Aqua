@@ -11,14 +11,12 @@ const CultureTest = sequelize.define(
       autoIncrement: true,
       allowNull: false,
     },
-    externalAbnormalColor: {
-      type: DataTypes.ENUM,
-      values: ["Yes", "No"],
+    yellowColonies: {
+      type: DataTypes.DOUBLE,
       allowNull: false,
     },
-    externalLesionUclers: {
-      type: DataTypes.ENUM,
-      values: ["Yes", "No"],
+    greenColonies: {
+      type: DataTypes.DOUBLE,
       allowNull: false,
     },
     status: {

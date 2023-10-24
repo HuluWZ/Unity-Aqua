@@ -1,20 +1,21 @@
 const ApiResponse = require("../../configs/api_response");
 const FeedTest = require("../../models/sample/feedTest");
 const Tank = require("../../models/tank");
+const Farmer = require("../../models/farmer");
+const User = require("../../models/user");
 
 const createFeed = async (req, res) => {
   const { body } = req;
   let news = await FeedTest.create(body);
 
   if (!news) return ApiResponse.error(res, "Something Went Wrong", 200);
-
   return ApiResponse.success(res, news);
 };
 
 const getAllFeed = async (req, res) => {
   let newsList = await FeedTest.findAll({
     order: [["createdAt", "DESC"]],
-    include: Tank,
+    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -23,7 +24,9 @@ const getAllFeed = async (req, res) => {
 };
 const getFeed = async (req, res) => {
   const { id } = req.params;
-  let newsList = await FeedTest.findByPk(id, { include: Tank });
+  let newsList = await FeedTest.findByPk(id, {
+    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+  });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
 

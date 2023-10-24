@@ -52,7 +52,7 @@ const findFarmerFromPhone = async (req, res) => {
 const findFarmerAll = async (req, res) => {
 
   let user = await Farmer.findAll({
-    include:[User,State,District]
+    // include:[User,State,District]
   });
 
   return ApiResponse.success(res, user);

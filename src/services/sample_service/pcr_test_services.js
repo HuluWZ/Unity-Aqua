@@ -1,6 +1,8 @@
 const ApiResponse = require("../../configs/api_response");
 const PCRTest = require("../../models/sample/pcrTest");
 const Tank = require("../../models/tank");
+const Farmer = require("../../models/farmer");
+const User = require("../../models/user");
 
 const createPCR = async (req, res) => {
   const { body } = req;
@@ -14,20 +16,42 @@ const createPCR = async (req, res) => {
 const getAllPCR = async (req, res) => {
   let newsList = await PCRTest.findAll({
     order: [["createdAt", "DESC"]],
-    include: Tank,
+    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
+ let trueConditionsCultureTest = newsList.map((record) => {
+  const trueConditionsForRecord = {
+    // id: record.id,
+  };
+  if (record.pcr == "Negative") {
+    trueConditionsForRecord.pcr = record.pcr;
+  }
+  // Create the status field with the JSON-like content
+  record.status = trueConditionsForRecord;
 
-  return ApiResponse.success(res, newsList);
+  return record;
+});
+  return ApiResponse.success(res, trueConditionsCultureTest);
 };
 const getPCR = async (req, res) => {
   const { id } = req.params;
-  let newsList = await PCRTest.findByPk(id, { include: Tank });
+  let newsList = await PCRTest.findByPk(id, {
+    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+  });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
-
-  return ApiResponse.success(res, newsList);
+let trueConditionsCultureTest = (record) => {
+  const trueConditionsForRecord = {
+    // id: record.id,
+  };
+  if (record.pcr == "Negative") {
+    trueConditionsForRecord.pcr = record.pcr;
+  }
+  record.status = trueConditionsForRecord;
+  return record;
+};
+  return ApiResponse.success(res, trueConditionsCultureTest(newsList));
 };
 
 const deletePCR = async (req, res) => {
@@ -53,6 +77,28 @@ const updatePCR = async (req, res) => {
 
   return ApiResponse.success(res, newsList);
 };
+const getAllComplexPCR = async (req, res) => {
+  let newsList = await PCRTest.findAll({
+    where:{
+      pcr:"Negative"
+    },
+    order: [["createdAt", "DESC"]],
+    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+  });
+ let trueConditionsCultureTest = newsList.map((record) => {
+   const trueConditionsForRecord = {
+     // id: record.id,
+   };
+   if (record.pcr == "Negative") {
+     trueConditionsForRecord.pcr = record.pcr;
+   }
+   // Create the status field with the JSON-like content
+   record.status = trueConditionsForRecord;
+
+   return record;
+ });
+  return ApiResponse.success(res, trueConditionsCultureTest);
+};
 
 module.exports = {
   createPCR,
@@ -60,4 +106,5 @@ module.exports = {
   getPCR,
   deletePCR,
   updatePCR,
+  getAllComplexPCR,
 };
