@@ -61,6 +61,10 @@ const SoilTest = sequelize.define(
       values:["Light","Medium","Heavy"],
       allowNull: false,
     },
+    testId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     status: {
       type: DataTypes.ENUM,
       values: ["1", "2"],

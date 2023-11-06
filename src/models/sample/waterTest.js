@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../configs/db_config");
+const AllTest = require("./test");
 const Tank = require("../tank");
 
 const WaterTest = sequelize.define(
@@ -70,6 +71,10 @@ const WaterTest = sequelize.define(
     },
     electricalConductivity: {
       type: DataTypes.DECIMAL,
+    },
+    testId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     status: {
       type: DataTypes.ENUM,

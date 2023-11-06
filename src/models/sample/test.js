@@ -2,8 +2,8 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../../configs/db_config");
 const Tank = require("../tank");
 
-const PCRTest = sequelize.define(
-  "pcrTest",
+const AllTest = sequelize.define(
+  "alltest",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -11,13 +11,22 @@ const PCRTest = sequelize.define(
       autoIncrement: true,
       allowNull: false,
     },
-    pcr: {
+    type:{
       type: DataTypes.ENUM,
-      values: ["Positive", "Negative"],
+      values: ["Water", "Fish","Shrimp","Soil","PCR","Feed"],
+      defaultValue: "Water",
       allowNull: false,
     },
-    testId: {
-      type: DataTypes.INTEGER,
+    depth: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+    },
+    biomass: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+    },
+    weight: {
+      type: DataTypes.DECIMAL,
       allowNull: false,
     },
     status: {
@@ -30,7 +39,7 @@ const PCRTest = sequelize.define(
   { freezeTableName: true }
 );
 
-Tank.hasMany(PCRTest);
-PCRTest.belongsTo(Tank);
+Tank.hasMany(AllTest);
+AllTest.belongsTo(Tank);
 
-module.exports = PCRTest;
+module.exports = AllTest;

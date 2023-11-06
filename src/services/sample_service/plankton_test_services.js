@@ -3,13 +3,20 @@ const PlanktonTest = require("../../models/sample/planktonTest");
 const Tank = require("../../models/tank");
 const Farmer = require("../../models/farmer");
 const User = require("../../models/user");
+const AllTest = require("../../models/sample/test");
 
 const createPlankton = async (req, res) => {
   const { body } = req;
   let news = await PlanktonTest.create(body);
 
   if (!news) return ApiResponse.error(res, "Something Went Wrong", 200);
-
+const id = body?.testId;
+let newsList = await AllTest.update(
+  { status: "2" },
+  {
+    where: { id: id },
+  }
+);
   return ApiResponse.success(res, news);
 };
 

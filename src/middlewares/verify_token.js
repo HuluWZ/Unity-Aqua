@@ -15,14 +15,13 @@ const verifyToken = async (req, res, next) => {
       where: { uuid: uuid },
     });
     
-    // console.log(` Verifying Token `,user?.dataValues)
     if (!user) return ApiResponse.error(res, "User not found", 200);
     req.body.user = user?.dataValues;
     req.user = user?.dataValues;
-
+    // console.log(` Verifying Token `,user?.dataValues)
     next();
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     return ApiResponse.error(res, "Invalid Token", 401);
   }
 };

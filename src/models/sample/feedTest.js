@@ -31,6 +31,10 @@ const FeedTest = sequelize.define(
       type: DataTypes.DECIMAL,
       allowNull: false,
     },
+    testId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     status: {
       type: DataTypes.ENUM,
       values: ["1", "2"],

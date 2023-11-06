@@ -144,6 +144,17 @@ const approveUser = async (req, res) => {
   return ApiResponse.success(res, user);
 };
 
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  const usr = req.body;
+  console.log(" User ", usr, );
+  let user = await User.update(usr, {
+    where: { id: id },
+  });
+  if (!user) return ApiResponse.error(res, "Something Went Wrong", 400);
+
+  return ApiResponse.success(res, user);
+};
 const deleteUser = async (req, res) => {
   const { id } = req.params;
   if (!id)
@@ -180,5 +191,6 @@ module.exports = {
   changePassword,
   deleteUser,
   approveUser,
+  updateUser,
   findUser,
 };

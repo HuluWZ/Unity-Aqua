@@ -19,6 +19,10 @@ const CultureTest = sequelize.define(
       type: DataTypes.DOUBLE,
       allowNull: false,
     },
+    testId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     status: {
       type: DataTypes.ENUM,
       values: ["1", "2"],

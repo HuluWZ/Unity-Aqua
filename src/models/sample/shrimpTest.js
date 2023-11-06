@@ -151,6 +151,10 @@ const ShrimpTest = sequelize.define(
       values: ["Yes", "No"],
       allowNull: false,
     },
+    testId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     status: {
       type: DataTypes.ENUM,
       values: ["1", "2"],
