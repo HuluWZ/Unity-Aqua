@@ -53,7 +53,7 @@ const FishTest = sequelize.define(
     },
     internalBloodLumps: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     liver: {
@@ -73,73 +73,77 @@ const FishTest = sequelize.define(
     },
     redDisease: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     ulcerativeDropsy: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     abdominalDropsy: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     bodyColumnaris: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     gillColumnaris: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     epizooticUlcerativeSyndrome: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     dactylogyrus: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     gyrodactylus: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     trichodina: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     myxobolus: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     anchorWormORLernaea: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     argulus: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     finRotORTailrot: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
     },
     hemorrhagicSepticemia: {
       type: DataTypes.ENUM,
-      values: ["Mild", "Moderate", "Severe"],
+      values: ["Mild", "Moderate", "Severe", "Not Found"],
       allowNull: false,
+    },
+    diagnosedProblemAndDisease: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
     testId: {
       type: DataTypes.INTEGER,

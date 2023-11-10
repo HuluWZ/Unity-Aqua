@@ -72,6 +72,9 @@ const WaterTest = sequelize.define(
     electricalConductivity: {
       type: DataTypes.DECIMAL,
     },
+    totalDissolvedSolids: {
+      type: DataTypes.DECIMAL,
+    },
     testId: {
       type: DataTypes.INTEGER,
       allowNull: false,

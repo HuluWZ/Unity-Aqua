@@ -36,35 +36,6 @@ var newsFishAll = newsList.map((record) => {
     trueConditionsForRecord.ph = record.ph;
   }
 
-  if (record.temprature !== null && (record.temprature < 27 || record.temprature > 32)) {
-    trueConditionsForRecord.temprature = record.temprature;
-  }
-
-  if (
-    record.salinity !== null && shrimpType &&
-    (record.salinity < 5 || record.salinity > 25)
-  ) {
-    trueConditionsForRecord.salinity = record.salinity;
-  }
-
-  if (
-    record.salinity !== null && fishPolyType &&
-    record.salinity != 0
-  ) {
-    trueConditionsForRecord.salinity = record.salinity;
-  }
-
-  if (record.co3 !== null && (record.co3 < 20 || record.co3 > 40)) {
-    trueConditionsForRecord.co3 = record.co3;
-  }
-
-  if (record.hco3 !== null && shrimpType && (record.hco3 < 100 || record.hco3 > 150)) {
-    trueConditionsForRecord.hco3 = record.hco3;
-  }
-  if (record.hco3 !== null && fishPolyType && (record.hco3 < 150 || record.hco3 > 400)) {
-    trueConditionsForRecord.hco3 = record.hco3;
-  }
-
   if (record.totalAlkanility !== null && shrimpType &&(record.totalAlkanility < 100 || record.totalAlkanility > 300)) {
     trueConditionsForRecord.totalAlkanility = record.totalAlkanility;
   }
@@ -79,30 +50,6 @@ var newsFishAll = newsList.map((record) => {
   if (record.totalHardness !== null && fishPolyType && (record.totalHardness < 100 || record.totalHardness > 300)) {
     trueConditionsForRecord.totalHardness = record.totalHardness;
   }
-  if (record.ca !== null && (record.ca <= 100)) {
-    trueConditionsForRecord.ca = record.ca;
-  }
-
-  if (record.mg !== null && (record.mg <= 200)) {
-    trueConditionsForRecord.mg = record.mg;
-  }
-
-  if (record.k !== null && (record.k <= 100)) {
-    trueConditionsForRecord.k = record.k;
-  }
-
-  if (record.fe !== null && (record.fe >= 1)) {
-    trueConditionsForRecord.fe = record.fe;
-  }
-
-  if (record.na !== null && (record.na <= 1500)) {
-    trueConditionsForRecord.na = record.na;
-  }
-
-  if (record.cl2 !== null && (record.cl2 !== 0)) {
-    trueConditionsForRecord.cl2 = record.cl2;
-  }
-
   if (record.tan !== null && (record.tan >= 0.5)) {
     trueConditionsForRecord.tan = record.tan;
   }
@@ -119,20 +66,10 @@ var newsFishAll = newsList.map((record) => {
     trueConditionsForRecord.h2s = record.h2s;
   }
 
-  if (record.co2 !== null && (record.co2 >= 10)) {
-    trueConditionsForRecord.co2 = record.co2;
+  if (record.totalDissolvedSolids !== null && (record.totalDissolvedSolids <= 200)) {
+    trueConditionsForRecord.totalDissolvedSolids = record.totalDissolvedSolids;
   }
 
-  if (record.dissolvedOxygen !== null && (record.dissolvedOxygen <= 4)) {
-    trueConditionsForRecord.dissolvedOxygen = record.dissolvedOxygen;
-  }
-
-  if (record.electricalConductivity !== null && shrimpType && (record.electricalConductivity < 800 || record.electricalConductivity > 2500)) {
-    trueConditionsForRecord.electricalConductivity = record.electricalConductivity;
-  }
- if (record.electricalConductivity !== null && fishPolyType && (record.electricalConductivity < 200 || record.electricalConductivity > 1000)) {
-    trueConditionsForRecord.electricalConductivity = record.electricalConductivity;
-  }
   // Assign the trueConditionsForRecord to the status field
   record.status = trueConditionsForRecord;
 
@@ -150,49 +87,10 @@ const getWater = async (req, res) => {
 
 var newsFishAll = (record) => {
   var trueConditionsForRecord = {};
-  const fishPolyType =
-    record.tank.cultureType == "Fish" || record.tank.cultureType == "Shrimp";
+  const fishPolyType = record.tank.cultureType == "Fish" || record.tank.cultureType == "Shrimp";
   const shrimpType = record.tank.cultureType == "Shrimp";
   if (record.ph !== null && (record.ph < 7.5 || record.ph > 8.5)) {
     trueConditionsForRecord.ph = record.ph;
-  }
-
-  if (
-    record.temprature !== null &&
-    (record.temprature < 27 || record.temprature > 32)
-  ) {
-    trueConditionsForRecord.temprature = record.temprature;
-  }
-
-  if (
-    record.salinity !== null &&
-    shrimpType &&
-    (record.salinity < 5 || record.salinity > 25)
-  ) {
-    trueConditionsForRecord.salinity = record.salinity;
-  }
-
-  if (record.salinity !== null && fishPolyType && record.salinity != 0) {
-    trueConditionsForRecord.salinity = record.salinity;
-  }
-
-  if (record.co3 !== null && (record.co3 < 20 || record.co3 > 40)) {
-    trueConditionsForRecord.co3 = record.co3;
-  }
-
-  if (
-    record.hco3 !== null &&
-    shrimpType &&
-    (record.hco3 < 100 || record.hco3 > 150)
-  ) {
-    trueConditionsForRecord.hco3 = record.hco3;
-  }
-  if (
-    record.hco3 !== null &&
-    fishPolyType &&
-    (record.hco3 < 150 || record.hco3 > 400)
-  ) {
-    trueConditionsForRecord.hco3 = record.hco3;
   }
 
   if (
@@ -225,30 +123,6 @@ var newsFishAll = (record) => {
   ) {
     trueConditionsForRecord.totalHardness = record.totalHardness;
   }
-  if (record.ca !== null && record.ca <= 100) {
-    trueConditionsForRecord.ca = record.ca;
-  }
-
-  if (record.mg !== null && record.mg <= 200) {
-    trueConditionsForRecord.mg = record.mg;
-  }
-
-  if (record.k !== null && record.k <= 100) {
-    trueConditionsForRecord.k = record.k;
-  }
-
-  if (record.fe !== null && record.fe >= 1) {
-    trueConditionsForRecord.fe = record.fe;
-  }
-
-  if (record.na !== null && record.na <= 1500) {
-    trueConditionsForRecord.na = record.na;
-  }
-
-  if (record.cl2 !== null && record.cl2 !== 0) {
-    trueConditionsForRecord.cl2 = record.cl2;
-  }
-
   if (record.tan !== null && record.tan >= 0.5) {
     trueConditionsForRecord.tan = record.tan;
   }
@@ -265,32 +139,13 @@ var newsFishAll = (record) => {
     trueConditionsForRecord.h2s = record.h2s;
   }
 
-  if (record.co2 !== null && record.co2 >= 10) {
-    trueConditionsForRecord.co2 = record.co2;
+  if (
+    record.totalDissolvedSolids !== null &&
+    record.totalDissolvedSolids <= 200
+  ) {
+    trueConditionsForRecord.totalDissolvedSolids = record.totalDissolvedSolids;
   }
 
-  if (record.dissolvedOxygen !== null && record.dissolvedOxygen <= 4) {
-    trueConditionsForRecord.dissolvedOxygen = record.dissolvedOxygen;
-  }
-
-  if (
-    record.electricalConductivity !== null &&
-    shrimpType &&
-    (record.electricalConductivity < 800 ||
-      record.electricalConductivity > 2500)
-  ) {
-    trueConditionsForRecord.electricalConductivity =
-      record.electricalConductivity;
-  }
-  if (
-    record.electricalConductivity !== null &&
-    fishPolyType &&
-    (record.electricalConductivity < 200 ||
-      record.electricalConductivity > 1000)
-  ) {
-    trueConditionsForRecord.electricalConductivity =
-      record.electricalConductivity;
-  }
   // Assign the trueConditionsForRecord to the status field
   record.status = trueConditionsForRecord;
   return record;
@@ -337,47 +192,6 @@ const getAllComplexWater = async (req, res) => {
           },
         },
         {
-          temprature: {
-            [Op.and]: {
-              [Op.ne]: null, // Check that the ph value is not null
-              [Op.or]: {
-                [Op.lt]: 27,
-                [Op.gt]: 32,
-              },
-            },
-          },
-        },
-        {
-          salinity: {
-            [Op.and]: {
-              [Op.ne]: null,
-              [Op.ne]:0, // Check that the ph value is not null
-            },
-          },
-        },
-        {
-          co3: {
-            [Op.and]: {
-              [Op.ne]: null, // Check that the ph value is not null
-              [Op.or]: {
-                [Op.lt]: 20,
-                [Op.gt]: 40,
-              },
-            },
-          },
-        },
-        {
-          hco3: {
-              [Op.and]: {
-                [Op.ne]: null, // Check that the ph value is not null
-                [Op.or]: {
-                  [Op.lt]: 150,
-                  [Op.gt]: 400,
-                },
-              },
-          },
-        },
-        {
           totalAlkanility: {
               [Op.and]: {
                 [Op.ne]: null, // Check that the ph value is not null
@@ -399,53 +213,7 @@ const getAllComplexWater = async (req, res) => {
               },
           },
         },
-        { ca: {
-            [Op.and]: {
-              [Op.ne]: null, // Check that the ph value is not null
-              [Op.lte]: 100,
-              },
-            },
-        }, 
-      ,
-        {
-          mg: {
-              [Op.and]: {
-                [Op.ne]: null, // Check that the ph value is not null
-                [Op.lte]: 200,
-              },
-            },
-        },
-        {
-          k: {
-              [Op.and]: {
-                [Op.ne]: null, // Check that the ph value is not null
-                [Op.lte]: 100,
-              },
-          },
-        },
-        {
-          fe: {
-              [Op.and]: {
-                [Op.ne]: null, // Check that the ph value is not null
-                [Op.gte]: 1,
-              },
-          },
-        },
-        { 
-          na: {
-              [Op.and]: {
-                [Op.ne]: null, // Check that the ph value is not null
-                [Op.lte]: 1500,
-              },
-        }, 
-       },
-        { cl2: {
-              [Op.and]: {
-                [Op.ne]: null, // Check that the ph value is not null
-                [Op.ne]: 0,
-              },
-        }, 
-        },
+        ,
         { tan: {
               [Op.and]: {
               [Op.ne]: null, // Check that the ph value is not null
@@ -459,7 +227,8 @@ const getAllComplexWater = async (req, res) => {
               [Op.gte]: 0.1,
           },
 
-        }, },
+        }, 
+       },
         { no2: {
             [Op.and]: {
               [Op.ne]: null, // Check that the ph value is not null
@@ -474,28 +243,12 @@ const getAllComplexWater = async (req, res) => {
           },
           }, 
         },
-        { co2: {
-            [Op.and]: {
-              [Op.ne]: null, // Check that the ph value is not null
-              [Op.gte]: 10,
-          },
-        }, },
+        ,
         { 
-          dissolvedOxygen: {
+          totalDissolvedSolids: {
             [Op.and]: {
               [Op.ne]: null, // Check that the ph value is not null
-              [Op.lte]: 4,
-           },
-         }, 
-        },
-        { 
-          electricalConductivity: {
-            [Op.and]: {
-              [Op.ne]: null, // Check that the ph value is not null
-              [Op.or]: {
-                [Op.lt]: 200,
-                [Op.gt]: 1000,
-              },
+              [Op.lte]: 200,
             },
           },
         }, 
@@ -518,28 +271,6 @@ const getAllComplexWater = async (req, res) => {
     }
 
     if (
-      record.temprature !== null &&
-      (record.temprature < 27 || record.temprature > 32)
-    ) {
-      trueConditionsForRecord.temprature = record.temprature;
-    }
-
-    if (
-      record.salinity !== null &&
-      (record.salinity < 5 || record.salinity > 25)
-    ) {
-      trueConditionsForRecord.salinity = record.salinity;
-    }
-
-    if (record.co3 !== null && (record.co3 < 20 || record.co3 > 40)) {
-      trueConditionsForRecord.co3 = record.co3;
-    }
-
-    if (record.hco3 !== null && (record.hco3 < 150 || record.hco3 > 400)) {
-      trueConditionsForRecord.hco3 = record.hco3;
-    }
-
-    if (
       record.totalAlkanility !== null &&
       (record.totalAlkanility < 150 || record.totalAlkanility > 500)
     ) {
@@ -551,30 +282,6 @@ const getAllComplexWater = async (req, res) => {
       (record.totalHardness < 150 || record.totalHardness > 300)
     ) {
       trueConditionsForRecord.totalHardness = record.totalHardness;
-    }
-
-    if (record.ca !== null && record.ca <= 100) {
-      trueConditionsForRecord.ca = record.ca;
-    }
-
-    if (record.mg !== null && record.mg <= 200) {
-      trueConditionsForRecord.mg = record.mg;
-    }
-
-    if (record.k !== null && record.k <= 100) {
-      trueConditionsForRecord.k = record.k;
-    }
-
-    if (record.fe !== null && record.fe >= 1) {
-      trueConditionsForRecord.fe = record.fe;
-    }
-
-    if (record.na !== null && record.na <= 1500) {
-      trueConditionsForRecord.na = record.na;
-    }
-
-    if (record.cl2 !== null && record.cl2 !== 0) {
-      trueConditionsForRecord.cl2 = record.cl2;
     }
 
     if (record.tan !== null && record.tan >= 0.5) {
@@ -592,22 +299,12 @@ const getAllComplexWater = async (req, res) => {
     if (record.h2s !== null && record.h2s >= 0.01) {
       trueConditionsForRecord.h2s = record.h2s;
     }
-
-    if (record.co2 !== null && record.co2 >= 10) {
-      trueConditionsForRecord.co2 = record.co2;
-    }
-
-    if (record.dissolvedOxygen !== null && record.dissolvedOxygen <= 4) {
-      trueConditionsForRecord.dissolvedOxygen = record.dissolvedOxygen;
-    }
-
     if (
-      record.electricalConductivity !== null &&
-      (record.electricalConductivity < 200 ||
-        record.electricalConductivity > 1000)
+      record.totalDissolvedSolids !== null &&
+      record.totalDissolvedSolids <= 200
     ) {
-      trueConditionsForRecord.electricalConductivity =
-        record.electricalConductivity;
+      trueConditionsForRecord.totalDissolvedSolids =
+        record.totalDissolvedSolids;
     }
 
     // Assign the trueConditionsForRecord to the status field
@@ -630,50 +327,7 @@ var newsFish = await WaterTest.findAll({
           },
         },
       },
-      {
-        temprature: {
-          [Op.and]: {
-            [Op.ne]: null, // Check that the ph value is not null
-            [Op.or]: {
-              [Op.lt]: 27,
-              [Op.gt]: 32,
-            },
-          },
-        },
-      },
-      {
-        salinity: {
-          [Op.and]: {
-            [Op.ne]: null,
-            [Op.or]: {
-              [Op.lt]: 5,
-              [Op.gt]: 25,
-            },
-          },
-        },
-      },
-      {
-        co3: {
-          [Op.and]: {
-            [Op.ne]: null, // Check that the ph value is not null
-            [Op.or]: {
-              [Op.lt]: 20,
-              [Op.gt]: 40,
-            },
-          },
-        },
-      },
-      {
-        hco3: {
-          [Op.and]: {
-            [Op.ne]: null, // Check that the ph value is not null
-            [Op.or]: {
-              [Op.lt]: 100,
-              [Op.gt]: 150,
-            },
-          },
-        },
-      },
+      
       {
         totalAlkanility: {
           [Op.and]: {
@@ -693,55 +347,6 @@ var newsFish = await WaterTest.findAll({
               [Op.lt]: 250,
               [Op.gt]: 1800,
             },
-          },
-        },
-      },
-      {
-        ca: {
-          [Op.and]: {
-            [Op.ne]: null, // Check that the ph value is not null
-            [Op.lte]: 100,
-          },
-        },
-      },
-      ,
-      {
-        mg: {
-          [Op.and]: {
-            [Op.ne]: null, // Check that the ph value is not null
-            [Op.lte]: 200,
-          },
-        },
-      },
-      {
-        k: {
-          [Op.and]: {
-            [Op.ne]: null, // Check that the ph value is not null
-            [Op.lte]: 100,
-          },
-        },
-      },
-      {
-        fe: {
-          [Op.and]: {
-            [Op.ne]: null, // Check that the ph value is not null
-            [Op.gte]: 1,
-          },
-        },
-      },
-      {
-        na: {
-          [Op.and]: {
-            [Op.ne]: null, // Check that the ph value is not null
-            [Op.lte]: 1500,
-          },
-        },
-      },
-      {
-        cl2: {
-          [Op.and]: {
-            [Op.ne]: null, // Check that the ph value is not null
-            [Op.ne]: 0,
           },
         },
       },
@@ -778,32 +383,14 @@ var newsFish = await WaterTest.findAll({
         },
       },
       {
-        co2: {
-          [Op.and]: {
-            [Op.ne]: null, // Check that the ph value is not null
-            [Op.gte]: 10,
-          },
-        },
-      },
-      {
-        dissolvedOxygen: {
-          [Op.and]: {
-            [Op.ne]: null, // Check that the ph value is not null
-            [Op.lte]: 4,
-          },
-        },
-      },
-      {
-        electricalConductivity: {
-          [Op.and]: {
-            [Op.ne]: null, // Check that the ph value is not null
-            [Op.or]: {
-              [Op.lt]: 800,
-              [Op.gt]: 2500,
+        totalDissolvedSolids:{ 
+            [Op.and]: {
+              [Op.ne]: null, // Check that the ph value is not null
+              [Op.lte]: 200,
             },
-          },
-        },
+        }
       },
+      
     ],
   },
   order: [["createdAt", "DESC"]],
@@ -822,55 +409,12 @@ var trueConditionsFish = newsFish.map((record) => {
     trueConditionsForRecord.ph = record.ph;
   }
 
-  if (record.temprature !== null && (record.temprature < 27 || record.temprature > 32)) {
-    trueConditionsForRecord.temprature = record.temprature;
-  }
-
-  if (
-    record.salinity !== null &&
-    (record.salinity < 5 || record.salinity > 25)
-  ) {
-    trueConditionsForRecord.salinity = record.salinity;
-  }
-
-  if (record.co3 !== null && (record.co3 < 20 || record.co3 > 40)) {
-    trueConditionsForRecord.co3 = record.co3;
-  }
-
-  if (record.hco3 !== null && (record.hco3 < 100 || record.hco3 > 150)) {
-    trueConditionsForRecord.hco3 = record.hco3;
-  }
-
   if (record.totalAlkanility !== null && (record.totalAlkanility < 100 || record.totalAlkanility > 300)) {
     trueConditionsForRecord.totalAlkanility = record.totalAlkanility;
   }
 
   if (record.totalHardness !== null && (record.totalHardness < 250 || record.totalHardness > 1800)) {
     trueConditionsForRecord.totalHardness = record.totalHardness;
-  }
-
-  if (record.ca !== null && (record.ca <= 100)) {
-    trueConditionsForRecord.ca = record.ca;
-  }
-
-  if (record.mg !== null && (record.mg <= 200)) {
-    trueConditionsForRecord.mg = record.mg;
-  }
-
-  if (record.k !== null && (record.k <= 100)) {
-    trueConditionsForRecord.k = record.k;
-  }
-
-  if (record.fe !== null && (record.fe >= 1)) {
-    trueConditionsForRecord.fe = record.fe;
-  }
-
-  if (record.na !== null && (record.na <= 1500)) {
-    trueConditionsForRecord.na = record.na;
-  }
-
-  if (record.cl2 !== null && (record.cl2 !== 0)) {
-    trueConditionsForRecord.cl2 = record.cl2;
   }
 
   if (record.tan !== null && (record.tan >= 0.5)) {
@@ -889,16 +433,11 @@ var trueConditionsFish = newsFish.map((record) => {
     trueConditionsForRecord.h2s = record.h2s;
   }
 
-  if (record.co2 !== null && (record.co2 >= 10)) {
-    trueConditionsForRecord.co2 = record.co2;
-  }
-
-  if (record.dissolvedOxygen !== null && (record.dissolvedOxygen <= 4)) {
-    trueConditionsForRecord.dissolvedOxygen = record.dissolvedOxygen;
-  }
-
-  if (record.electricalConductivity !== null && (record.electricalConductivity < 200 || record.electricalConductivity > 1000)) {
-    trueConditionsForRecord.electricalConductivity = record.electricalConductivity;
+  if (
+    record.totalDissolvedSolids !== null &&
+    record.totalDissolvedSolids <= 200
+  ) {
+    trueConditionsForRecord.totalDissolvedSolids = record.totalDissolvedSolids;
   }
 
   // Assign the trueConditionsForRecord to the status field
@@ -907,8 +446,7 @@ var trueConditionsFish = newsFish.map((record) => {
   return record;
 });
 
-trueConditions.push(...trueConditionsFish);
-  // console.log(trueConditionsFish, trueConditions);
+  trueConditions.push(...trueConditionsFish);
   return ApiResponse.success(res, trueConditions);
 };
 module.exports = {
