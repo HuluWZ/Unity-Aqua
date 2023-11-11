@@ -4,26 +4,28 @@ const Tank = require("../../models/tank");
 const Farmer = require("../../models/farmer");
 const User = require("../../models/user");
 const AllTest = require("../../models/sample/test");
+const { Sequelize } = require('sequelize');
 
 const createSoil = async (req, res) => {
-  const { body } = req;
-  let news = await SoilTest.create(body);
+   const { body } = req;
+   let news = await SoilTest.create(body);
 
-  if (!news) return ApiResponse.error(res, "Something Went Wrong", 200);
-const id = body?.testId;
-let newsList = await AllTest.update(
-  { status: "2" },
-  {
-    where: { id: id },
-  }
-);
+   if (!news) return ApiResponse.error(res, "Something Went Wrong", 200);
+   const id = body?.testId;
+   let newsList = await AllTest.update(
+     { status: "2" },
+     {
+       where: { id: id },
+     }
+   );
   return ApiResponse.success(res, news);
 };
 
 const getAllSoil = async (req, res) => {
+
   let newsList = await SoilTest.findAll({
     order: [["createdAt", "DESC"]],
-    include: [{model:Tank,include:[{model:Farmer,include:User}]}],
+    include: [{model:AllTest},{model:Tank,include:[{model:Farmer,include:User}]}],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -33,7 +35,7 @@ const getAllSoil = async (req, res) => {
 const getSoil = async (req, res) => {
   const { id } = req.params;
   let newsList = await SoilTest.findByPk(id, {
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -65,10 +67,26 @@ const updateSoil = async (req, res) => {
   return ApiResponse.success(res, newsList);
 };
 
+const getAllComplexSoil = async (req, res) => {
+  let newsList = await SoilTest.findAll({
+    where:{
+      observation: {
+        [Sequelize.Op.not]: null
+       }
+    },
+    order: [["createdAt", "DESC"]],
+    include: [{model:AllTest},{model:Tank,include:[{model:Farmer,include:User}]}],
+  });
+
+  if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, newsList);
+};
 module.exports = {
   createSoil,
   getAllSoil,
   getSoil,
   deleteSoil,
   updateSoil,
+  getAllComplexSoil
 };

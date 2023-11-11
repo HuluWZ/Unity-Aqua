@@ -6,6 +6,7 @@ const errorHandler = require("../configs/error_handler_config");
 
 // Soil Test
 router.get("/", errorHandler(SoilTestService.getAllSoil));
+router.get("/complex/", errorHandler(SoilTestService.getAllComplexSoil));
 router.post("/", errorHandler(SoilTestService.createSoil));
 router.put("/:id", errorHandler(SoilTestService.updateSoil));
 router.get("/:id", errorHandler(SoilTestService.getSoil));
