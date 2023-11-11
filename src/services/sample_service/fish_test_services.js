@@ -5,6 +5,7 @@ const Farmer = require("../../models/farmer");
 const User = require("../../models/user");
 const { Op } = require("sequelize");
 const AllTest = require("../../models/sample/test");
+const { Sequelize } = require('sequelize');
 
 const createFish = async (req, res) => {
   const {body} = req;
@@ -24,240 +25,240 @@ let newsList = await AllTest.update(
 const getAllFish = async (req, res) => {
   let newsList = await FishTest.findAll({
     order: [["createdAt", "DESC"]],
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
-var trueConditionsFishTest = newsList.map((record) => {
-  const trueConditionsForRecord = {
-    // id: record.id,
-  };
+// var trueConditionsFishTest = newsList.map((record) => {
+//   const trueConditionsForRecord = {
+//     // id: record.id,
+//   };
 
-  if (record.bodyColour == "Dark") {
-    trueConditionsForRecord.bodyColour = record.bodyColour;
-  }
+//   if (record.bodyColour == "Dark") {
+//     trueConditionsForRecord.bodyColour = record.bodyColour;
+//   }
 
-  if (record.bodyTexture == "Wounded") {
-    trueConditionsForRecord.bodyTexture = record.bodyTexture;
-  }
+//   if (record.bodyTexture == "Wounded") {
+//     trueConditionsForRecord.bodyTexture = record.bodyTexture;
+//   }
 
-  if (record.mucus == "Heavy") {
-    trueConditionsForRecord.mucus = record.mucus;
-  }
+//   if (record.mucus == "Heavy") {
+//     trueConditionsForRecord.mucus = record.mucus;
+//   }
 
-  if (record.eyes == "Popped Out") {
-    trueConditionsForRecord.eyes = record.eyes;
-  }
+//   if (record.eyes == "Popped Out") {
+//     trueConditionsForRecord.eyes = record.eyes;
+//   }
 
-  if (record.finsColour !== "Damaged") {
-    trueConditionsForRecord.finsColour = record.finsColour;
-  }
+//   if (record.finsColour !== "Damaged") {
+//     trueConditionsForRecord.finsColour = record.finsColour;
+//   }
 
-  if (record.gills == "Damaged") {
-    trueConditionsForRecord.gills = record.gills;
-  }
+//   if (record.gills == "Damaged") {
+//     trueConditionsForRecord.gills = record.gills;
+//   }
 
-  if (record.intestines == "Fluids") {
-    trueConditionsForRecord.intestines = record.intestines;
-  }
+//   if (record.intestines == "Fluids") {
+//     trueConditionsForRecord.intestines = record.intestines;
+//   }
 
-  if (record.internalBloodLumps == "Severe") {
-    trueConditionsForRecord.internalBloodLumps = record.internalBloodLumps;
-  }
+//   if (record.internalBloodLumps == "Severe") {
+//     trueConditionsForRecord.internalBloodLumps = record.internalBloodLumps;
+//   }
 
-  if (record.liver == "Damaged") {
-    trueConditionsForRecord.liver = record.liver;
-  }
+//   if (record.liver == "Damaged") {
+//     trueConditionsForRecord.liver = record.liver;
+//   }
 
-  if (record.gut == "Puss") {
-    trueConditionsForRecord.gut = record.gut;
-  }
+//   if (record.gut == "Puss") {
+//     trueConditionsForRecord.gut = record.gut;
+//   }
 
-  if (record.gallBladder == "Damaged") {
-    trueConditionsForRecord.gallBladder = record.gallBladder;
-  }
+//   if (record.gallBladder == "Damaged") {
+//     trueConditionsForRecord.gallBladder = record.gallBladder;
+//   }
 
-  if (record.redDisease == "Severe") {
-    trueConditionsForRecord.redDisease = record.redDisease;
-  }
+//   if (record.redDisease == "Severe") {
+//     trueConditionsForRecord.redDisease = record.redDisease;
+//   }
 
-  if (record.ulcerativeDropsy == "Severe") {
-    trueConditionsForRecord.ulcerativeDropsy = record.ulcerativeDropsy;
-  }
+//   if (record.ulcerativeDropsy == "Severe") {
+//     trueConditionsForRecord.ulcerativeDropsy = record.ulcerativeDropsy;
+//   }
 
-  if (record.abdominalDropsy == "Severe") {
-    trueConditionsForRecord.abdominalDropsy = record.abdominalDropsy;
-  }
+//   if (record.abdominalDropsy == "Severe") {
+//     trueConditionsForRecord.abdominalDropsy = record.abdominalDropsy;
+//   }
 
-  if (record.bodyColumnaris == "Severe") {
-    trueConditionsForRecord.bodyColumnaris = record.bodyColumnaris;
-  }
+//   if (record.bodyColumnaris == "Severe") {
+//     trueConditionsForRecord.bodyColumnaris = record.bodyColumnaris;
+//   }
 
-  if (record.gillColumnaris == "Severe") {
-    trueConditionsForRecord.gillColumnaris = record.gillColumnaris;
-  }
+//   if (record.gillColumnaris == "Severe") {
+//     trueConditionsForRecord.gillColumnaris = record.gillColumnaris;
+//   }
 
-  if (record.epizooticUlcerativeSyndrome == "Severe") {
-    trueConditionsForRecord.epizooticUlcerativeSyndrome =
-      record.epizooticUlcerativeSyndrome;
-  }
+//   if (record.epizooticUlcerativeSyndrome == "Severe") {
+//     trueConditionsForRecord.epizooticUlcerativeSyndrome =
+//       record.epizooticUlcerativeSyndrome;
+//   }
 
-  if (record.dactylogyrus == "Severe") {
-    trueConditionsForRecord.dactylogyrus = record.dactylogyrus;
-  }
+//   if (record.dactylogyrus == "Severe") {
+//     trueConditionsForRecord.dactylogyrus = record.dactylogyrus;
+//   }
 
-  if (record.gyrodactylus == "Severe") {
-    trueConditionsForRecord.gyrodactylus = record.gyrodactylus;
-  }
+//   if (record.gyrodactylus == "Severe") {
+//     trueConditionsForRecord.gyrodactylus = record.gyrodactylus;
+//   }
 
-  if (record.trichodina == "Severe") {
-    trueConditionsForRecord.trichodina = record.trichodina;
-  }
+//   if (record.trichodina == "Severe") {
+//     trueConditionsForRecord.trichodina = record.trichodina;
+//   }
 
-  if (record.myxobolus == "Severe") {
-    trueConditionsForRecord.myxobolus = record.myxobolus;
-  }
+//   if (record.myxobolus == "Severe") {
+//     trueConditionsForRecord.myxobolus = record.myxobolus;
+//   }
 
-  if (record.anchorWormORLernaea == "Severe") {
-    trueConditionsForRecord.anchorWormORLernaea = record.anchorWormORLernaea;
-  }
+//   if (record.anchorWormORLernaea == "Severe") {
+//     trueConditionsForRecord.anchorWormORLernaea = record.anchorWormORLernaea;
+//   }
 
-  if (record.argulus == "Severe") {
-    trueConditionsForRecord.argulus = record.argulus;
-  }
+//   if (record.argulus == "Severe") {
+//     trueConditionsForRecord.argulus = record.argulus;
+//   }
 
-  if (record.finRotORTailrot == "Severe") {
-    trueConditionsForRecord.finRotORTailrot = record.finRotORTailrot;
-  }
+//   if (record.finRotORTailrot == "Severe") {
+//     trueConditionsForRecord.finRotORTailrot = record.finRotORTailrot;
+//   }
 
-  if (record.hemorrhagicSepticemia == "Severe") {
-    trueConditionsForRecord.hemorrhagicSepticemia =
-      record.hemorrhagicSepticemia;
-  }
-  // Create the status field with the JSON-like content
-  record.status = trueConditionsForRecord;
-  return record;
-});
-  return ApiResponse.success(res, trueConditionsFishTest);
+//   if (record.hemorrhagicSepticemia == "Severe") {
+//     trueConditionsForRecord.hemorrhagicSepticemia =
+//       record.hemorrhagicSepticemia;
+//   }
+//   // Create the status field with the JSON-like content
+//   record.status = trueConditionsForRecord;
+//   return record;
+// });
+  return ApiResponse.success(res, newsList);
 };
 const getFish = async (req, res) => {
   const { id } = req.params;
   let newsList = await FishTest.findByPk(id, {
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
-var trueConditionsFishTest = (record) => {
-  const trueConditionsForRecord = {
-    // id: record.id,
-  };
+// var trueConditionsFishTest = (record) => {
+//   const trueConditionsForRecord = {
+//     // id: record.id,
+//   };
 
-    if (record.bodyColour == "Dark") {
-      trueConditionsForRecord.bodyColour = record.bodyColour;
-    }
+//     if (record.bodyColour == "Dark") {
+//       trueConditionsForRecord.bodyColour = record.bodyColour;
+//     }
 
-    if (record.bodyTexture == "Wounded") {
-      trueConditionsForRecord.bodyTexture = record.bodyTexture;
-    }
+//     if (record.bodyTexture == "Wounded") {
+//       trueConditionsForRecord.bodyTexture = record.bodyTexture;
+//     }
 
-    if (record.mucus == "Heavy") {
-      trueConditionsForRecord.mucus = record.mucus;
-    }
+//     if (record.mucus == "Heavy") {
+//       trueConditionsForRecord.mucus = record.mucus;
+//     }
 
-    if (record.eyes == "Popped Out") {
-      trueConditionsForRecord.eyes = record.eyes;
-    }
+//     if (record.eyes == "Popped Out") {
+//       trueConditionsForRecord.eyes = record.eyes;
+//     }
 
-    if (record.finsColour !== "Damaged") {
-      trueConditionsForRecord.finsColour = record.finsColour;
-    }
+//     if (record.finsColour !== "Damaged") {
+//       trueConditionsForRecord.finsColour = record.finsColour;
+//     }
 
-    if (record.gills == "Damaged") {
-      trueConditionsForRecord.gills = record.gills;
-    }
+//     if (record.gills == "Damaged") {
+//       trueConditionsForRecord.gills = record.gills;
+//     }
 
-    if (record.intestines == "Fluids") {
-      trueConditionsForRecord.intestines = record.intestines;
-    }
+//     if (record.intestines == "Fluids") {
+//       trueConditionsForRecord.intestines = record.intestines;
+//     }
 
-    if (record.internalBloodLumps == "Severe") {
-      trueConditionsForRecord.internalBloodLumps = record.internalBloodLumps;
-    }
+//     if (record.internalBloodLumps == "Severe") {
+//       trueConditionsForRecord.internalBloodLumps = record.internalBloodLumps;
+//     }
 
-    if (record.liver == "Damaged") {
-      trueConditionsForRecord.liver = record.liver;
-    }
+//     if (record.liver == "Damaged") {
+//       trueConditionsForRecord.liver = record.liver;
+//     }
 
-    if (record.gut == "Puss") {
-      trueConditionsForRecord.gut = record.gut;
-    }
+//     if (record.gut == "Puss") {
+//       trueConditionsForRecord.gut = record.gut;
+//     }
 
-    if (record.gallBladder == "Damaged") {
-      trueConditionsForRecord.gallBladder = record.gallBladder;
-    }
+//     if (record.gallBladder == "Damaged") {
+//       trueConditionsForRecord.gallBladder = record.gallBladder;
+//     }
 
-    if (record.redDisease == "Severe") {
-      trueConditionsForRecord.redDisease = record.redDisease;
-    }
+//     if (record.redDisease == "Severe") {
+//       trueConditionsForRecord.redDisease = record.redDisease;
+//     }
 
-    if (record.ulcerativeDropsy == "Severe") {
-      trueConditionsForRecord.ulcerativeDropsy = record.ulcerativeDropsy;
-    }
+//     if (record.ulcerativeDropsy == "Severe") {
+//       trueConditionsForRecord.ulcerativeDropsy = record.ulcerativeDropsy;
+//     }
 
-    if (record.abdominalDropsy == "Severe") {
-      trueConditionsForRecord.abdominalDropsy = record.abdominalDropsy;
-    }
+//     if (record.abdominalDropsy == "Severe") {
+//       trueConditionsForRecord.abdominalDropsy = record.abdominalDropsy;
+//     }
 
-    if (record.bodyColumnaris == "Severe") {
-      trueConditionsForRecord.bodyColumnaris = record.bodyColumnaris;
-    }
+//     if (record.bodyColumnaris == "Severe") {
+//       trueConditionsForRecord.bodyColumnaris = record.bodyColumnaris;
+//     }
 
-    if (record.gillColumnaris == "Severe") {
-      trueConditionsForRecord.gillColumnaris = record.gillColumnaris;
-    }
+//     if (record.gillColumnaris == "Severe") {
+//       trueConditionsForRecord.gillColumnaris = record.gillColumnaris;
+//     }
 
-    if (record.epizooticUlcerativeSyndrome == "Severe") {
-      trueConditionsForRecord.epizooticUlcerativeSyndrome =
-        record.epizooticUlcerativeSyndrome;
-    }
+//     if (record.epizooticUlcerativeSyndrome == "Severe") {
+//       trueConditionsForRecord.epizooticUlcerativeSyndrome =
+//         record.epizooticUlcerativeSyndrome;
+//     }
 
-    if (record.dactylogyrus == "Severe") {
-      trueConditionsForRecord.dactylogyrus = record.dactylogyrus;
-    }
+//     if (record.dactylogyrus == "Severe") {
+//       trueConditionsForRecord.dactylogyrus = record.dactylogyrus;
+//     }
 
-    if (record.gyrodactylus == "Severe") {
-      trueConditionsForRecord.gyrodactylus = record.gyrodactylus;
-    }
+//     if (record.gyrodactylus == "Severe") {
+//       trueConditionsForRecord.gyrodactylus = record.gyrodactylus;
+//     }
 
-    if (record.trichodina == "Severe") {
-      trueConditionsForRecord.trichodina = record.trichodina;
-    }
+//     if (record.trichodina == "Severe") {
+//       trueConditionsForRecord.trichodina = record.trichodina;
+//     }
 
-    if (record.myxobolus == "Severe") {
-      trueConditionsForRecord.myxobolus = record.myxobolus;
-    }
+//     if (record.myxobolus == "Severe") {
+//       trueConditionsForRecord.myxobolus = record.myxobolus;
+//     }
 
-    if (record.anchorWormORLernaea == "Severe") {
-      trueConditionsForRecord.anchorWormORLernaea = record.anchorWormORLernaea;
-    }
+//     if (record.anchorWormORLernaea == "Severe") {
+//       trueConditionsForRecord.anchorWormORLernaea = record.anchorWormORLernaea;
+//     }
 
-    if (record.argulus == "Severe") {
-      trueConditionsForRecord.argulus = record.argulus;
-    }
+//     if (record.argulus == "Severe") {
+//       trueConditionsForRecord.argulus = record.argulus;
+//     }
 
-    if (record.finRotORTailrot == "Severe") {
-      trueConditionsForRecord.finRotORTailrot = record.finRotORTailrot;
-    }
+//     if (record.finRotORTailrot == "Severe") {
+//       trueConditionsForRecord.finRotORTailrot = record.finRotORTailrot;
+//     }
 
-    if (record.hemorrhagicSepticemia == "Severe") {
-      trueConditionsForRecord.hemorrhagicSepticemia =
-        record.hemorrhagicSepticemia;
-    }
-  // Create the status field with the JSON-like content
-  record.status = trueConditionsForRecord;
-  return record;
-};
-  return ApiResponse.success(res, trueConditionsFishTest(newsList));
+//     if (record.hemorrhagicSepticemia == "Severe") {
+//       trueConditionsForRecord.hemorrhagicSepticemia =
+//         record.hemorrhagicSepticemia;
+//     }
+//   // Create the status field with the JSON-like content
+//   record.status = trueConditionsForRecord;
+//   return record;
+// };
+  return ApiResponse.success(res, newsList);
 };
 
 const deleteFish = async (req, res) => {
@@ -287,150 +288,153 @@ const updateFish = async (req, res) => {
 const getAllComplexFish = async (req, res) => {
   let newsList = await FishTest.findAll({
     where: {
-      [Op.or]: [
-        { bodyColour: { [Op.eq]: "Dark" } },
-        { bodyTexture: { [Op.eq]: "Wounded" } },
-        { mucus: { [Op.eq]: "Heavy" } },
-        { eyes: { [Op.eq]: "Popped Out" } },
-        { finsColour: { [Op.eq]: "Damaged" } },
-        { gills: { [Op.eq]: "Damaged" } },
-        { intestines: { [Op.eq]: "Fluids" } },
-        { internalBloodLumps: { [Op.eq]: "Severe" } },
-        { liver: { [Op.eq]: "Damaged" } },
-        { gut: { [Op.eq]: "Puss" } },
-        { gallBladder: { [Op.eq]: "Damaged" } },
-        { redDisease: { [Op.eq]: "Severe" } },
-        { ulcerativeDropsy: { [Op.eq]: "Severe" } },
-        { abdominalDropsy: { [Op.eq]: "Severe" } },
-        { bodyColumnaris: { [Op.eq]: "Severe" } },
-        { gillColumnaris: { [Op.eq]: "Severe" } },
-        { epizooticUlcerativeSyndrome: { [Op.eq]: "Severe" } },
-        { dactylogyrus: { [Op.eq]: "Severe" } },
-        { gyrodactylus: { [Op.eq]: "Severe" } },
-        { trichodina: { [Op.eq]: "Severe" } },
-        { myxobolus: { [Op.eq]: "Severe" } },
-        { anchorWormORLernaea: { [Op.eq]: "Severe" } },
-        { argulus: { [Op.eq]: "Severe" } },
-        { finRotORTailrot: { [Op.eq]: "Severe" } },
-        { hemorrhagicSepticemia: { [Op.eq]: "Severe" } },
-      ],
+      diagnosedProblemAndDisease: {
+        [Sequelize.Op.not]: null 
+      }
+      // [Op.or]: [
+      //   { bodyColour: { [Op.eq]: "Dark" } },
+      //   { bodyTexture: { [Op.eq]: "Wounded" } },
+      //   { mucus: { [Op.eq]: "Heavy" } },
+      //   { eyes: { [Op.eq]: "Popped Out" } },
+      //   { finsColour: { [Op.eq]: "Damaged" } },
+      //   { gills: { [Op.eq]: "Damaged" } },
+      //   { intestines: { [Op.eq]: "Fluids" } },
+      //   { internalBloodLumps: { [Op.eq]: "Severe" } },
+      //   { liver: { [Op.eq]: "Damaged" } },
+      //   { gut: { [Op.eq]: "Puss" } },
+      //   { gallBladder: { [Op.eq]: "Damaged" } },
+      //   { redDisease: { [Op.eq]: "Severe" } },
+      //   { ulcerativeDropsy: { [Op.eq]: "Severe" } },
+      //   { abdominalDropsy: { [Op.eq]: "Severe" } },
+      //   { bodyColumnaris: { [Op.eq]: "Severe" } },
+      //   { gillColumnaris: { [Op.eq]: "Severe" } },
+      //   { epizooticUlcerativeSyndrome: { [Op.eq]: "Severe" } },
+      //   { dactylogyrus: { [Op.eq]: "Severe" } },
+      //   { gyrodactylus: { [Op.eq]: "Severe" } },
+      //   { trichodina: { [Op.eq]: "Severe" } },
+      //   { myxobolus: { [Op.eq]: "Severe" } },
+      //   { anchorWormORLernaea: { [Op.eq]: "Severe" } },
+      //   { argulus: { [Op.eq]: "Severe" } },
+      //   { finRotORTailrot: { [Op.eq]: "Severe" } },
+      //   { hemorrhagicSepticemia: { [Op.eq]: "Severe" } },
+      // ],
     },
     order: [["createdAt", "DESC"]],
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
-var trueConditionsFishTest = newsList.map((record) => {
-  const trueConditionsForRecord = {
-    // id: record.id,
-  };
+// var trueConditionsFishTest = newsList.map((record) => {
+//   const trueConditionsForRecord = {
+//     // id: record.id,
+//   };
 
-    if (record.bodyColour == "Dark") {
-      trueConditionsForRecord.bodyColour = record.bodyColour;
-    }
+//     if (record.bodyColour == "Dark") {
+//       trueConditionsForRecord.bodyColour = record.bodyColour;
+//     }
 
-    if (record.bodyTexture == "Wounded") {
-      trueConditionsForRecord.bodyTexture = record.bodyTexture;
-    }
+//     if (record.bodyTexture == "Wounded") {
+//       trueConditionsForRecord.bodyTexture = record.bodyTexture;
+//     }
 
-    if (record.mucus == "Heavy") {
-      trueConditionsForRecord.mucus = record.mucus;
-    }
+//     if (record.mucus == "Heavy") {
+//       trueConditionsForRecord.mucus = record.mucus;
+//     }
 
-    if (record.eyes == "Popped Out") {
-      trueConditionsForRecord.eyes = record.eyes;
-    }
+//     if (record.eyes == "Popped Out") {
+//       trueConditionsForRecord.eyes = record.eyes;
+//     }
 
-    if (record.finsColour !== "Damaged") {
-      trueConditionsForRecord.finsColour = record.finsColour;
-    }
+//     if (record.finsColour !== "Damaged") {
+//       trueConditionsForRecord.finsColour = record.finsColour;
+//     }
 
-    if (record.gills == "Damaged") {
-      trueConditionsForRecord.gills = record.gills;
-    }
+//     if (record.gills == "Damaged") {
+//       trueConditionsForRecord.gills = record.gills;
+//     }
 
-    if (record.intestines == "Fluids") {
-      trueConditionsForRecord.intestines = record.intestines;
-    }
+//     if (record.intestines == "Fluids") {
+//       trueConditionsForRecord.intestines = record.intestines;
+//     }
 
-    if (record.internalBloodLumps == "Severe") {
-      trueConditionsForRecord.internalBloodLumps = record.internalBloodLumps;
-    }
+//     if (record.internalBloodLumps == "Severe") {
+//       trueConditionsForRecord.internalBloodLumps = record.internalBloodLumps;
+//     }
 
-    if (record.liver == "Damaged") {
-      trueConditionsForRecord.liver = record.liver;
-    }
+//     if (record.liver == "Damaged") {
+//       trueConditionsForRecord.liver = record.liver;
+//     }
 
-    if (record.gut == "Puss") {
-      trueConditionsForRecord.gut = record.gut;
-    }
+//     if (record.gut == "Puss") {
+//       trueConditionsForRecord.gut = record.gut;
+//     }
 
-    if (record.gallBladder == "Damaged") {
-      trueConditionsForRecord.gallBladder = record.gallBladder;
-    }
+//     if (record.gallBladder == "Damaged") {
+//       trueConditionsForRecord.gallBladder = record.gallBladder;
+//     }
 
-    if (record.redDisease == "Severe") {
-      trueConditionsForRecord.redDisease = record.redDisease;
-    }
+//     if (record.redDisease == "Severe") {
+//       trueConditionsForRecord.redDisease = record.redDisease;
+//     }
 
-    if (record.ulcerativeDropsy == "Severe") {
-      trueConditionsForRecord.ulcerativeDropsy = record.ulcerativeDropsy;
-    }
+//     if (record.ulcerativeDropsy == "Severe") {
+//       trueConditionsForRecord.ulcerativeDropsy = record.ulcerativeDropsy;
+//     }
 
-    if (record.abdominalDropsy == "Severe") {
-      trueConditionsForRecord.abdominalDropsy = record.abdominalDropsy;
-    }
+//     if (record.abdominalDropsy == "Severe") {
+//       trueConditionsForRecord.abdominalDropsy = record.abdominalDropsy;
+//     }
 
-    if (record.bodyColumnaris == "Severe") {
-      trueConditionsForRecord.bodyColumnaris = record.bodyColumnaris;
-    }
+//     if (record.bodyColumnaris == "Severe") {
+//       trueConditionsForRecord.bodyColumnaris = record.bodyColumnaris;
+//     }
 
-    if (record.gillColumnaris == "Severe") {
-      trueConditionsForRecord.gillColumnaris = record.gillColumnaris;
-    }
+//     if (record.gillColumnaris == "Severe") {
+//       trueConditionsForRecord.gillColumnaris = record.gillColumnaris;
+//     }
 
-    if (record.epizooticUlcerativeSyndrome == "Severe") {
-      trueConditionsForRecord.epizooticUlcerativeSyndrome =
-        record.epizooticUlcerativeSyndrome;
-    }
+//     if (record.epizooticUlcerativeSyndrome == "Severe") {
+//       trueConditionsForRecord.epizooticUlcerativeSyndrome =
+//         record.epizooticUlcerativeSyndrome;
+//     }
 
-    if (record.dactylogyrus == "Severe") {
-      trueConditionsForRecord.dactylogyrus = record.dactylogyrus;
-    }
+//     if (record.dactylogyrus == "Severe") {
+//       trueConditionsForRecord.dactylogyrus = record.dactylogyrus;
+//     }
 
-    if (record.gyrodactylus == "Severe") {
-      trueConditionsForRecord.gyrodactylus = record.gyrodactylus;
-    }
+//     if (record.gyrodactylus == "Severe") {
+//       trueConditionsForRecord.gyrodactylus = record.gyrodactylus;
+//     }
 
-    if (record.trichodina == "Severe") {
-      trueConditionsForRecord.trichodina = record.trichodina;
-    }
+//     if (record.trichodina == "Severe") {
+//       trueConditionsForRecord.trichodina = record.trichodina;
+//     }
 
-    if (record.myxobolus == "Severe") {
-      trueConditionsForRecord.myxobolus = record.myxobolus;
-    }
+//     if (record.myxobolus == "Severe") {
+//       trueConditionsForRecord.myxobolus = record.myxobolus;
+//     }
 
-    if (record.anchorWormORLernaea == "Severe") {
-      trueConditionsForRecord.anchorWormORLernaea = record.anchorWormORLernaea;
-    }
+//     if (record.anchorWormORLernaea == "Severe") {
+//       trueConditionsForRecord.anchorWormORLernaea = record.anchorWormORLernaea;
+//     }
 
-    if (record.argulus == "Severe") {
-      trueConditionsForRecord.argulus = record.argulus;
-    }
+//     if (record.argulus == "Severe") {
+//       trueConditionsForRecord.argulus = record.argulus;
+//     }
 
-    if (record.finRotORTailrot == "Severe") {
-      trueConditionsForRecord.finRotORTailrot = record.finRotORTailrot;
-    }
+//     if (record.finRotORTailrot == "Severe") {
+//       trueConditionsForRecord.finRotORTailrot = record.finRotORTailrot;
+//     }
 
-    if (record.hemorrhagicSepticemia == "Severe") {
-      trueConditionsForRecord.hemorrhagicSepticemia =
-        record.hemorrhagicSepticemia;
-    }
-  // Create the status field with the JSON-like content
-  record.status = trueConditionsForRecord;
+//     if (record.hemorrhagicSepticemia == "Severe") {
+//       trueConditionsForRecord.hemorrhagicSepticemia =
+//         record.hemorrhagicSepticemia;
+//     }
+//   // Create the status field with the JSON-like content
+//   record.status = trueConditionsForRecord;
 
-  return record;
-});
+//   return record;
+// });
 
-  return ApiResponse.success(res, trueConditionsFishTest);
+  return ApiResponse.success(res, newsList);
 };
 module.exports = {
   createFish,

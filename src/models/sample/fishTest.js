@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../configs/db_config");
 const Tank = require("../tank");
+const AllTest = require("./test");
 
 const FishTest = sequelize.define(
   "fishTest",
@@ -161,5 +162,7 @@ const FishTest = sequelize.define(
 
 Tank.hasMany(FishTest);
 FishTest.belongsTo(Tank);
+
+FishTest.belongsTo(AllTest, { foreignKey: 'testId' });
 
 module.exports = FishTest;
