@@ -4,6 +4,7 @@ const Tank = require("../../models/tank");
 const Farmer = require("../../models/farmer");
 const User = require("../../models/user");
 const AllTest = require("../../models/sample/test");
+const { Sequelize } = require('sequelize');
 
 const createShrimp = async (req, res) => {
   const { body } = req;
@@ -23,7 +24,7 @@ let newsList = await AllTest.update(
 const getAllShrimp = async (req, res) => {
   let newsList = await ShrimpTest.findAll({
     order: [["createdAt", "DESC"]],
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -33,7 +34,7 @@ const getAllShrimp = async (req, res) => {
 const getShrimp = async (req, res) => {
   const { id } = req.params;
   let newsList = await ShrimpTest.findByPk(id, { 
-    include: [{model:Tank,include:[{model:Farmer,include:User}]}],
+    include: [{model:AllTest},{model:Tank,include:[{model:Farmer,include:User}]}],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -65,10 +66,26 @@ const updateShrimp = async (req, res) => {
   return ApiResponse.success(res, newsList);
 };
 
+const getAllComplexShrimp = async (req, res) => {
+  let newsList = await ShrimpTest.findAll({
+    where:{
+      diagnosedProblemAndDisease:{
+        [Sequelize.Op.not]: null
+      }
+    },
+    order: [["createdAt", "DESC"]],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
+  });
+
+  if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, newsList);
+};
 module.exports = {
   createShrimp,
   getAllShrimp,
   getShrimp,
   deleteShrimp,
   updateShrimp,
+  getAllComplexShrimp
 };

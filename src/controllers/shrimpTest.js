@@ -6,6 +6,7 @@ const errorHandler = require("../configs/error_handler_config");
 
 // Shrimp Test
 router.get("/", errorHandler(ShrimpTestServices.getAllShrimp));
+router.get("/complex/", errorHandler(ShrimpTestServices.getAllComplexShrimp));
 router.post("/", errorHandler(ShrimpTestServices.createShrimp));
 router.put("/:id", errorHandler(ShrimpTestServices.updateShrimp));
 router.get("/:id", errorHandler(ShrimpTestServices.getShrimp));
