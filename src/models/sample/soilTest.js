@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../configs/db_config");
 const Tank = require("../tank");
+const AllTest = require("./test");
 
 const SoilTest = sequelize.define(
   "soilTest",
@@ -61,6 +62,16 @@ const SoilTest = sequelize.define(
       values:["Light","Medium","Heavy"],
       allowNull: false,
     },
+    observationType: {
+      type: DataTypes.ENUM,
+      values:["Good","Problematic"],
+      defaultValue :"Good",
+      allowNull: false,
+    },
+    observation:{
+     type: DataTypes.STRING,
+     allowNull: true
+    },
     testId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -77,5 +88,7 @@ const SoilTest = sequelize.define(
 
 Tank.hasMany(SoilTest);
 SoilTest.belongsTo(Tank);
+
+SoilTest.belongsTo(AllTest, { foreignKey: 'testId' });
 
 module.exports = SoilTest;

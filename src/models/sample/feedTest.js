@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../configs/db_config");
 const Tank = require("../tank");
+const AllTest = require("./test");
 
 const FeedTest = sequelize.define(
   "feedTest",
@@ -47,5 +48,7 @@ const FeedTest = sequelize.define(
 
 Tank.hasMany(FeedTest);
 FeedTest.belongsTo(Tank);
+
+FeedTest.belongsTo(AllTest, { foreignKey: 'testId' });
 
 module.exports = FeedTest;
