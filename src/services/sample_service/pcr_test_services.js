@@ -4,6 +4,7 @@ const Tank = require("../../models/tank");
 const Farmer = require("../../models/farmer");
 const User = require("../../models/user");
 const AllTest = require("../../models/sample/test");
+const { Sequelize } = require('sequelize');
 
 const createPCR = async (req, res) => {
   const { body } = req;
@@ -23,10 +24,11 @@ let newsList = await AllTest.update(
 const getAllPCR = async (req, res) => {
   let newsList = await PCRTest.findAll({
     order: [["createdAt", "DESC"]],
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
+
  let trueConditionsCultureTest = newsList.map((record) => {
   const trueConditionsForRecord = {
     // id: record.id,
@@ -44,7 +46,7 @@ const getAllPCR = async (req, res) => {
 const getPCR = async (req, res) => {
   const { id } = req.params;
   let newsList = await PCRTest.findByPk(id, {
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -87,10 +89,10 @@ const updatePCR = async (req, res) => {
 const getAllComplexPCR = async (req, res) => {
   let newsList = await PCRTest.findAll({
     where:{
-      pcr:"Negative"
+      pcr: "Negative"
     },
     order: [["createdAt", "DESC"]],
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
  let trueConditionsCultureTest = newsList.map((record) => {
    const trueConditionsForRecord = {

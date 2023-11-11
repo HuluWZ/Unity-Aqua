@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../configs/db_config");
 const Tank = require("../tank");
+const AllTest = require("./test");
 
 const PCRTest = sequelize.define(
   "pcrTest",
@@ -32,5 +33,7 @@ const PCRTest = sequelize.define(
 
 Tank.hasMany(PCRTest);
 PCRTest.belongsTo(Tank);
+
+PCRTest.belongsTo(AllTest, { foreignKey: 'testId' });
 
 module.exports = PCRTest;

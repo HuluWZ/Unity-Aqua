@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../configs/db_config");
 const Tank = require("../tank");
+const AllTest = require("./test");
 
 const ShrimpTest = sequelize.define(
   "shrimpTest",
@@ -151,6 +152,10 @@ const ShrimpTest = sequelize.define(
       values: ["Yes", "No"],
       allowNull: false,
     },
+    diagnosedProblemAndDisease:{
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     testId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -167,5 +172,7 @@ const ShrimpTest = sequelize.define(
 
 Tank.hasMany(ShrimpTest);
 ShrimpTest.belongsTo(Tank);
+
+ShrimpTest.belongsTo(AllTest, { foreignKey: 'testId' });
 
 module.exports = ShrimpTest;
