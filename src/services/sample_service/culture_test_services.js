@@ -24,7 +24,7 @@ let newsList = await AllTest.update(
 const getAllCulture = async (req, res) => {
   let newsList = await CultureTest.findAll({
     order: [["createdAt", "DESC"]],
-    include: [{model:Tank,include:[{model:Farmer,include:User}]}],
+    include: [{model:AllTest},{model:Tank,include:[{model:Farmer,include:User}]}],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -48,7 +48,7 @@ let trueConditionsCultureTest = newsList.map((record) => {
 const getCulture = async (req, res) => {
   const { id } = req.params;
   let newsList = await CultureTest.findByPk(id, {
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 let trueConditionsCultureTest = (record)=>{
   console.log(" Record ",record);
@@ -112,7 +112,7 @@ const getAllComplexCulture = async (req, res) => {
       ],
     },
     order: [["createdAt", "DESC"]],
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 let trueConditionsCultureTest = newsList.map((record) => {
   const trueConditionsForRecord = {

@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../configs/db_config");
 const Tank = require("../tank");
+const AllTest = require("./test");
 
 const CultureTest = sequelize.define(
   "cultureTest",
@@ -35,5 +36,7 @@ const CultureTest = sequelize.define(
 
 Tank.hasMany(CultureTest);
 CultureTest.belongsTo(Tank);
+
+CultureTest.belongsTo(AllTest, { foreignKey: 'testId' });
 
 module.exports = CultureTest;
