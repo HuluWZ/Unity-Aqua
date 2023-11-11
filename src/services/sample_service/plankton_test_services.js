@@ -4,6 +4,7 @@ const Tank = require("../../models/tank");
 const Farmer = require("../../models/farmer");
 const User = require("../../models/user");
 const AllTest = require("../../models/sample/test");
+const { Sequelize } = require('sequelize');
 
 const createPlankton = async (req, res) => {
   const { body } = req;
@@ -23,7 +24,7 @@ let newsList = await AllTest.update(
 const getAllPlankton = async (req, res) => {
   let newsList = await PlanktonTest.findAll({
     order: [["createdAt", "DESC"]],
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -36,7 +37,7 @@ const trueConditionsPlankton = newsList.map((record) => {
   for (const key in record.dataValues) {
     if (
       key !== 'id' && // Exclude 'id' from attributes
-      key.startsWith('harmful_') && // Exclude attributes starting with 'harmful_'
+      key.startsWith('harmful_Microcystis') && // Exclude attributes starting with 'harmful_'
       record[key] !== null
     ) {
       trueConditionsForRecord[key] = record[key];
@@ -52,7 +53,7 @@ const trueConditionsPlankton = newsList.map((record) => {
 const getPlankton = async (req, res) => {
   const { id } = req.params;
   let newsList = await PlanktonTest.findByPk(id, {
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -65,7 +66,7 @@ const getPlankton = async (req, res) => {
   for (const key in record.dataValues) {
     if (
       key !== "id" && // Exclude 'id' from attributes
-      key.startsWith("harmful_") && // Exclude attributes starting with 'harmful_'
+      key.startsWith("harmful_Microcystis") && // Exclude attributes starting with 'harmful_'
       record[key] !== null
     ) {
       trueConditionsForRecord[key] = record[key];
@@ -105,8 +106,13 @@ const updatePlankton = async (req, res) => {
 
 const getAllComplexPlankton = async (req, res) => {
   let newsList = await PlanktonTest.findAll({
+    where :{
+     harmful_Microcystis : {
+      [Sequelize.Op.not]: null
+     }
+    },
     order: [["createdAt", "DESC"]],
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -114,12 +120,11 @@ const getAllComplexPlankton = async (req, res) => {
     .map((record) => {
       const trueConditionsForRecord = {
         // id: record.id,
-        // status: {}, // Initialize the status object
       };
       for (const key in record.dataValues) {
         if (
           key !== "id" && // Exclude 'id' from attributes
-          key.startsWith("harmful_") && // Exclude attributes starting with 'harmful_'
+          key.startsWith("harmful_Microcystis") && // Exclude attributes starting with 'harmful_'
           record[key] !== null
         ) {
           trueConditionsForRecord[key] = record[key];
