@@ -91,4 +91,5 @@ const WaterTest = sequelize.define(
 Tank.hasMany(WaterTest);
 WaterTest.belongsTo(Tank);
 
+WaterTest.belongsTo(AllTest, { foreignKey: 'testId' });
 module.exports = WaterTest;

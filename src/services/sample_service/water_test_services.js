@@ -24,14 +24,14 @@ const createWater = async (req, res) => {
 const getAllWater = async (req, res) => {
   let newsList = await WaterTest.findAll({
     order: [["createdAt", "DESC"]],
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
-var newsFishAll = newsList.map((record) => {
+ var newsFishAll = newsList.map((record) => {
   var trueConditionsForRecord = {};
-  const fishPolyType = record.tank.cultureType == "Fish" || record.tank.cultureType == "Shrimp";
-  const shrimpType = record.tank.cultureType == "Shrimp";
+  const fishPolyType = record?.tank?.cultureType == "Fish" || record?.tank?.cultureType == "Shrimp";
+  const shrimpType = record?.tank?.cultureType == "Shrimp";
   if (record.ph !== null && (record.ph < 7.5 || record.ph > 8.5)) {
     trueConditionsForRecord.ph = record.ph;
   }
@@ -70,17 +70,17 @@ var newsFishAll = newsList.map((record) => {
     trueConditionsForRecord.totalDissolvedSolids = record.totalDissolvedSolids;
   }
 
-  // Assign the trueConditionsForRecord to the status field
   record.status = trueConditionsForRecord;
 
   return record;
 });
   return ApiResponse.success(res, newsFishAll);
 };
+
 const getWater = async (req, res) => {
   const { id } = req.params;
   let newsList = await WaterTest.findByPk(id, {
-    include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    include: [{model:AllTest},{ model: Tank, include: [{ model: Farmer, include: User }] }],
   });
 
   if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
@@ -146,7 +146,6 @@ var newsFishAll = (record) => {
     trueConditionsForRecord.totalDissolvedSolids = record.totalDissolvedSolids;
   }
 
-  // Assign the trueConditionsForRecord to the status field
   record.status = trueConditionsForRecord;
   return record;
 };
@@ -219,24 +218,27 @@ const getAllComplexWater = async (req, res) => {
               [Op.ne]: null, // Check that the ph value is not null
               [Op.gte]: 0.5,
           },
-
-        }, },
-        { nh3: {
+         }, 
+        },
+        { 
+          nh3: {
               [Op.and]: {
               [Op.ne]: null, // Check that the ph value is not null
               [Op.gte]: 0.1,
           },
 
-        }, 
-       },
-        { no2: {
+         }, 
+        },
+        { 
+          no2: {
             [Op.and]: {
               [Op.ne]: null, // Check that the ph value is not null
               [Op.gte]: 0.25,
           },
          }, 
         },
-        { h2s: {
+        { 
+          h2s: {
             [Op.and]: {
               [Op.ne]: null, // Check that the ph value is not null
               [Op.gte]: 0.01,
@@ -256,6 +258,7 @@ const getAllComplexWater = async (req, res) => {
     },
     order: [["createdAt", "DESC"]],
     include: [
+      {model:AllTest},
       {
         model: Tank,
         where: { [Op.or]: [{ cultureType: "Poly" }, { cultureType: "Fish" }] },
@@ -307,7 +310,6 @@ const getAllComplexWater = async (req, res) => {
         record.totalDissolvedSolids;
     }
 
-    // Assign the trueConditionsForRecord to the status field
     record.status = trueConditionsForRecord;
 
     return record;
@@ -395,6 +397,7 @@ var newsFish = await WaterTest.findAll({
   },
   order: [["createdAt", "DESC"]],
   include: [
+    {model:AllTest},
     {
       model: Tank,
       where: { cultureType: "Shrimp" },
@@ -440,7 +443,6 @@ var trueConditionsFish = newsFish.map((record) => {
     trueConditionsForRecord.totalDissolvedSolids = record.totalDissolvedSolids;
   }
 
-  // Assign the trueConditionsForRecord to the status field
   record.status = trueConditionsForRecord;
 
   return record;
