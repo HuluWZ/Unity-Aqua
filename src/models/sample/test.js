@@ -19,15 +19,20 @@ const AllTest = sequelize.define(
     },
     depth: {
       type: DataTypes.DECIMAL,
-      allowNull: false,
+      allowNull: true,
     },
     biomass: {
       type: DataTypes.DECIMAL,
-      allowNull: false,
+      allowNull: true,
     },
     weight: {
       type: DataTypes.DECIMAL,
-      allowNull: false,
+      allowNull: true,
+    },
+    planktonTest: {
+      type: DataTypes.ENUM,
+      values :["Yes","No"],
+      allowNull: true,
     },
     status: {
       type: DataTypes.ENUM,

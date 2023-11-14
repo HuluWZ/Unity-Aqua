@@ -67,10 +67,12 @@ const findTankAll = async (req, res) => {
 const findTank = async (req, res) => {
   const {id} = req.params
   let user = await Tank.findByPk(id, {
-    include: [{ model: Farmer, include: [User, State, District] }],
+    include: [{ model: Farmer, include: [User] }],
   });
   if (!user) return ApiResponse.error(res, "No Tank with This Id Found", 400);
-  return ApiResponse.success(res, user);
+  console.log(user)
+  const obj = {"tank":user}
+  return ApiResponse.success(res, obj);
 };
 const findTankFarmer = async (req, res) => {
   const { id } = req.params;
