@@ -13,7 +13,7 @@ const AllTest = sequelize.define(
     },
     type:{
       type: DataTypes.ENUM,
-      values: ["Water", "Fish","Shrimp","Soil","PCR","Feed"],
+      values: ["Water", "Fish","Shrimp","Soil","PCR","Feed","Culture"],
       defaultValue: "Water",
       allowNull: false,
     },

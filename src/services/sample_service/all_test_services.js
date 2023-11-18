@@ -7,13 +7,19 @@ const { Op } = require("sequelize");
 
 const createTest= async (req, res) => {
   const { body } = req;
+  const isAlreadyExist = await AllTest.findOne({where:{
+    tankId:body?.tankId
+  }})
+  if(isAlreadyExist){
+    return ApiResponse.error(res, "Test with this Tank  already exist", 200);
+  }
   let news = await AllTest.create(body);
-  if (!news) return ApiResponse.error(res, "Something Went Wrong", 200);
+  if (!news) return ApiResponse.error(res, "Something Went Wrong", 403);
   return ApiResponse.success(res, news);
 };
 
 const getAllTest= async (req, res) => {
-  const allTypes = ["Water", "Fish", "Shrimp", "Soil", "PCR", "Feed"];
+  const allTypes = ["Water", "Fish", "Shrimp", "Soil", "PCR", "Feed","Culture"];
   const typeResults = {};
   const promises = allTypes.map(async (type) => {
   const tests = await AllTest.findAll({
