@@ -79,6 +79,7 @@ const login = async (req, res) => {
     return ApiResponse.success(res, {
       authToken: token,
       user: user,
+      type:"User"
     });
   }
   if(labAssistant){
@@ -97,6 +98,7 @@ const login = async (req, res) => {
     return ApiResponse.success(res, {
       authToken: token,
       user: labAssistant,
+      type:"Assistant"
     });
 
   }

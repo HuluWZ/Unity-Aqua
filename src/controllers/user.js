@@ -5,10 +5,7 @@ const router = express.Router();
 const validate = require("../middlewares/validate");
 const errorHandler = require("../configs/error_handler_config");
 const verifyToken = require("../middlewares/verify_token");
-const {
-  uploadMultipleImage,
-  uploadMultipleLabImage,
-} = require("../middlewares/fileUpload");
+const {uploadMultipleImage, uploadMultipleLabImage} = require("../middlewares/fileUpload");
 
 
 router.post("/signup",uploadMultipleLabImage,errorHandler(UserServices.signUp));
