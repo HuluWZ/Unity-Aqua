@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 
 const userRoutes = require("./user");
+const labRoutes = require("./labAssistant");
 const forumRoutes = require("./forum");
 const newsRoutes = require("./news");
 const bookRoutes = require("./book");
@@ -43,6 +44,7 @@ app.use("/api/shrimp", shrimpTestRoutes);
 app.use("/api/plankton", planktonTestRoutes);
 app.use("/api/culture", cultureTestRoutes);
 app.use("/api/test", allTestRoutes);
+app.use("/api/lab", labRoutes);
 
 app.use("/api", stateDistrictRoutes);
 

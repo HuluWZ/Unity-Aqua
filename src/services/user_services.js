@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const LabAssistant = require("../models/labAssistant");
 const ApiResponse = require("../configs/api_response");
 const SERECT_KEY = require("../helpers/constants");
 const uploadToCloud = require("../configs/cloudnary");
@@ -45,32 +46,61 @@ const signUp = async (req, res) => {
 
 const login = async (req, res) => {
   console.log(" USERRR ",req.body)
-  await User.sync({ alter: true });
-  // await ForumBookmark.sync();
+  // await User.sync({ alter: true });
+  const {phoneNumber,pin} = req.body;
   const { isAdmin } = req.query;
 
   const user = await User.findOne({
     where: {
-       phoneNumber: req.body.phoneNumber, 
-       pin: req.body.pin
+       phoneNumber, 
+       pin
       },
   });
-  console.log(user);
-  if (!user) return ApiResponse.error(res, "User not found", 200);
-  if (user.status =="2") return ApiResponse.error(res, "User is not Approved by Admin", 200);
-
-  if (isAdmin) {
-    if (user.get().role !== "admin")
-      return ApiResponse.error(res, "User has no privilege", 400);
+ 
+  console.log(user,"user")
+  const labAssistant = await LabAssistant.findOne({
+    where: {
+       phoneNumber, 
+       pin
+      },
+  });
+  console.log(labAssistant,"lab Assistant");
+  if(user){
+    if (user.status =="2") return ApiResponse.error(res, "User is not Approved by Admin", 200);
+  
+    if (isAdmin) {
+      if (user.get().role !== "admin")
+        return ApiResponse.error(res, "User has no privilege", 400);
+    }
+  
+    const token = jwt.sign({ uuid: user.uuid }, SERECT_KEY,{
+             expiresIn: '2d'
+     });
+    return ApiResponse.success(res, {
+      authToken: token,
+      user: user,
+    });
   }
+  if(labAssistant){
+    if (labAssistant?.status != "Approved") {
+      let newsList = await LabAssistant.update(
+        {status:"Pending"},
+        {
+          where: { phoneNumber,pin },
+        }
+      );
+      return ApiResponse.error(res, "lab Assistant is not Approved by Admin", 403);
+    }
+    const token = jwt.sign({ uuid: labAssistant.uuid }, SERECT_KEY,{
+             expiresIn: '2d'
+    });
+    return ApiResponse.success(res, {
+      authToken: token,
+      user: labAssistant,
+    });
 
-  const token = jwt.sign({ uuid: user.uuid }, SERECT_KEY,{
-           expiresIn: '2d'
-  });
-  ApiResponse.success(res, {
-    authToken: token,
-    user: user,
-  });
+  }
+  return   ApiResponse.error(res, "Not found", 404);
 };
 
 const userProfile = async (req, res) => {
