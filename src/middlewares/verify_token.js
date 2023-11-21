@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const SECRECT_KEY = require("../helpers/constants");
 const ApiResponse = require("../configs/api_response");
 const User = require("../models/user");
+const LabAssistant = require("../models/labAssistant");
 
 const verifyToken = async (req, res, next) => {
   const { authtoken } = req.headers;
@@ -14,11 +15,12 @@ const verifyToken = async (req, res, next) => {
     const user = await User.findOne({
       where: { uuid: uuid },
     });
-    
-    if (!user) return ApiResponse.error(res, "User not found", 200);
-    req.body.user = user?.dataValues;
-    req.user = user?.dataValues;
-    // console.log(` Verifying Token `,user?.dataValues)
+    const labAssistant = await LabAssistant.findOne({
+      where: { uuid: uuid },
+    });
+    if (!(user || labAssistant)) return ApiResponse.error(res, "User not found", 404);
+    req.body.user = user?.dataValues || labAssistant?.dataValues;
+    req.user = user?.dataValues || labAssistant?.dataValues;
     next();
   } catch (e) {
     console.log(e);
