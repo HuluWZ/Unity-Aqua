@@ -42,7 +42,7 @@ const findFarmerTankFromPhone = async (req, res) => {
 
   let farmer = await Farmer.findOne({
     where: { phoneNumber: phone },
-    include:[User,State,District]
+    include:[User]
   });
 
   if(!farmer)   return ApiResponse.error(res, "No Farmer with This Phone Found", 400);
@@ -58,7 +58,7 @@ const findTankAll = async (req, res) => {
     include: [
       {
         model:Farmer,
-        include:[User,State,District]
+        include:[User]
       }],
   });
 
