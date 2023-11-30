@@ -1,5 +1,4 @@
 const express = require("express");
-const app = express();
 const sequelize = require("./src/configs/db_config");
 const routes = require("./src/controllers/index");
 const handleError = require("./src/middlewares/handle_error");
@@ -8,6 +7,7 @@ const cors = require("cors");
 
 const bodyParser = require("body-parser");
 
+const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 // app.use(fileUpload());
