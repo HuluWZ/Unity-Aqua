@@ -42,7 +42,7 @@ const findFarmerFromPhone = async (req, res) => {
 
   let user = await Farmer.findOne({
     where: { phoneNumber: phone },
-    include:[State,User,District],
+    include:[User],
     order: [["createdAt", "DESC"]],
   });
   if (!user) return ApiResponse.error(res, "No Farmer with this phone", 404);
@@ -61,7 +61,7 @@ const findFarmer = async (req, res) => {
   const {id} = req.params;
   let user = await Farmer.findByPk(id,
     {
-      include:[State,User,District]
+      include:[User]
     });
   if (!user) return ApiResponse.error(res, "No Farmer with This Id", 404);
 
