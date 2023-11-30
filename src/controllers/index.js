@@ -45,8 +45,7 @@ app.use("/api/plankton", planktonTestRoutes);
 app.use("/api/culture", cultureTestRoutes);
 app.use("/api/test", allTestRoutes);
 app.use("/api/lab", labRoutes);
-
-app.use("/api", stateDistrictRoutes);
+// app.use("/api", stateDistrictRoutes);
 
 module.exports = app; 
 
