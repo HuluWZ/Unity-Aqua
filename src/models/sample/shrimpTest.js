@@ -156,6 +156,10 @@ const ShrimpTest = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    suggestion:{
+     type: DataTypes.STRING,
+     allowNull: true
+    },
     testId: {
       type: DataTypes.INTEGER,
       allowNull: false,

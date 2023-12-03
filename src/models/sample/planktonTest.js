@@ -99,6 +99,10 @@ const PlanktonTest = sequelize.define(
     harmful_Pleurosigma: {
       type: DataTypes.DOUBLE,
     },
+    suggestion:{
+     type: DataTypes.STRING,
+     allowNull: true
+    },
     testId: {
       type: DataTypes.INTEGER,
       allowNull: false,

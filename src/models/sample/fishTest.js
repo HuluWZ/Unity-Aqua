@@ -146,6 +146,10 @@ const FishTest = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true
     },
+    suggestion:{
+     type: DataTypes.STRING,
+     allowNull: true
+    },
     testId: {
       type: DataTypes.INTEGER,
       allowNull: false,

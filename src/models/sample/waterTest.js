@@ -75,6 +75,10 @@ const WaterTest = sequelize.define(
     totalDissolvedSolids: {
       type: DataTypes.DECIMAL,
     },
+    suggestion:{
+     type: DataTypes.STRING,
+     allowNull: true
+    }
     testId: {
       type: DataTypes.INTEGER,
       allowNull: false,

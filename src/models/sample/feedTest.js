@@ -36,6 +36,10 @@ const FeedTest = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    suggestion:{
+     type: DataTypes.STRING,
+     allowNull: true
+    },
     status: {
       type: DataTypes.ENUM,
       values: ["1", "2"],
