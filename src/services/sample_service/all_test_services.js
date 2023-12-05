@@ -7,9 +7,15 @@ const { Op } = require("sequelize");
 
 const createTest= async (req, res) => {
   const { body } = req;
-  const isAlreadyExist = await AllTest.findOne({where:{
-    tankId:body?.tankId
-  }})
+  const twelveHoursAgo = new Date(new Date() - 12 * 60 * 60 * 1000); // 12 hour
+  const condition = {
+    tankId: body?.tankId,
+    type: body?.type,
+    createdAt: {
+      [Op.gt]: twelveHoursAgo, 
+    }
+  }
+  const isAlreadyExist = await AllTest.findOne({where:condition});
   if(isAlreadyExist){
     return ApiResponse.error(res, "Test with this Tank  already exist", 200);
   }
