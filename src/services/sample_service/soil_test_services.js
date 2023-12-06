@@ -82,11 +82,33 @@ const getAllComplexSoil = async (req, res) => {
 
   return ApiResponse.success(res, newsList);
 };
+
+const completeSoil = async (req, res) => {
+  const { id } = req.params;
+  var { body } = req;
+  if (!id) return ApiResponse.error(res, "Soil ID Not Found", 400);
+  let newsList = await SoilTest.update({suggestion:body.suggestion}, {
+    where: { id: id },
+  });
+
+  const testid = body?.testId;
+  let news = await AllTest.update(
+   { status: "3" },
+   {
+     where: { id: testid },
+   }
+  );
+
+  if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, newsList);
+};
 module.exports = {
   createSoil,
   getAllSoil,
   getSoil,
   deleteSoil,
   updateSoil,
-  getAllComplexSoil
+  getAllComplexSoil,
+  completeSoil
 };
