@@ -451,6 +451,29 @@ var trueConditionsFish = newsFish.map((record) => {
   trueConditions.push(...trueConditionsFish);
   return ApiResponse.success(res, trueConditions);
 };
+
+
+
+const completeWater = async (req, res) => {
+  const { id } = req.params;
+  var { body } = req;
+  if (!id) return ApiResponse.error(res, "Water ID Not Found", 400);
+  let newsList = await WaterTest.update({suggestion:body.suggestion}, {
+    where: { id: id },
+  });
+
+  const testid = body?.testId;
+  let news = await AllTest.update(
+   { status: "3" },
+   {
+     where: { id: testid },
+   }
+  );
+
+  if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, newsList);
+};
 module.exports = {
   createWater,
   getAllWater,
@@ -458,4 +481,6 @@ module.exports = {
   deleteWater,
   updateWater,
   getAllComplexWater,
+  completeWater
 };
+

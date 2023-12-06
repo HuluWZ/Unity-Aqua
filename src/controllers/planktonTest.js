@@ -8,6 +8,7 @@ const errorHandler = require("../configs/error_handler_config");
 router.get("/", errorHandler(PlanktonService.getAllPlankton));
 router.get("/complex", errorHandler(PlanktonService.getAllComplexPlankton));
 router.post("/", errorHandler(PlanktonService.createPlankton));
+router.put("/complete/:id", errorHandler(PlanktonService.completePlankton));
 router.put("/:id", errorHandler(PlanktonService.updatePlankton));
 router.get("/:id", errorHandler(PlanktonService.getPlankton));
 router.delete("/:id", errorHandler(PlanktonService.deletePlankton));
