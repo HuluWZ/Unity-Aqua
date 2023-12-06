@@ -7,6 +7,7 @@ const errorHandler = require("../configs/error_handler_config");
 // Culture Test
 router.get("/", errorHandler(CultureTestService.getAllCulture));
 router.post("/", errorHandler(CultureTestService.createCulture));
+router.put("/complete/:id", errorHandler(CultureTestService.completeCulture));
 router.put("/:id", errorHandler(CultureTestService.updateCulture));
 router.get("/complex", errorHandler(CultureTestService.getAllComplexCulture));
 router.get("/:id", errorHandler(CultureTestService.getCulture));
