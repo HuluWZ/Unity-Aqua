@@ -136,6 +136,27 @@ const getAllComplexPlankton = async (req, res) => {
     }).filter((record) => Object.keys(record?.status).length > 0); // Filter to return only non-empty records
   return ApiResponse.success(res, trueConditionsPlankton);
 }
+
+const completePlankton = async (req, res) => {
+  const { id } = req.params;
+  var { body } = req;
+  if (!id) return ApiResponse.error(res, "Plankton ID Not Found", 400);
+  let newsList = await PlanktonTest.update({suggestion:body.suggestion}, {
+    where: { id: id },
+  });
+
+  const testid = body?.testId;
+  let news = await AllTest.update(
+   { status: "3" },
+   {
+     where: { id: testid },
+   }
+  );
+
+  if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, newsList);
+};
 module.exports = {
   createPlankton,
   getAllPlankton,
@@ -143,4 +164,5 @@ module.exports = {
   deletePlankton,
   updatePlankton,
   getAllComplexPlankton,
+  completePlankton
 };

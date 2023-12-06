@@ -109,6 +109,27 @@ const getAllComplexPCR = async (req, res) => {
   return ApiResponse.success(res, trueConditionsCultureTest);
 };
 
+
+const completePCR = async (req, res) => {
+  const { id } = req.params;
+  var { body } = req;
+  if (!id) return ApiResponse.error(res, "PCR ID Not Found", 400);
+  let newsList = await PCRTest.update({suggestion:body.suggestion}, {
+    where: { id: id },
+  });
+
+  const testid = body?.testId;
+  let news = await AllTest.update(
+   { status: "3" },
+   {
+     where: { id: testid },
+   }
+  );
+
+  if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, newsList);
+};
 module.exports = {
   createPCR,
   getAllPCR,
@@ -116,4 +137,5 @@ module.exports = {
   deletePCR,
   updatePCR,
   getAllComplexPCR,
+  completePCR
 };
