@@ -95,6 +95,7 @@ const updateCulture = async (req, res) => {
 
   return ApiResponse.success(res, newsList);
 };
+
 const getAllComplexCulture = async (req, res) => {
   let newsList = await CultureTest.findAll({
     where: {
@@ -136,6 +137,28 @@ let trueConditionsCultureTest = newsList.map((record) => {
 
   return ApiResponse.success(res, trueConditionsCultureTest);
 };
+
+const completeCulture = async (req, res) => {
+  const { id } = req.params;
+  var { body } = req;
+
+  if (!id) return ApiResponse.error(res, "Culture ID Not Found", 400);
+  let newsList = await CultureTest.update({suggestion:body.suggestion}, {
+    where: { id: id },
+  });
+
+  const testid = body?.testId;
+  let news = await AllTest.update(
+   { status: "3" },
+   {
+     where: { id: testid },
+   }
+  );
+
+  if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, newsList);
+};
 module.exports = {
   createCulture,
   getAllCulture,
@@ -143,4 +166,5 @@ module.exports = {
   deleteCulture,
   updateCulture,
   getAllComplexCulture,
+  completeCulture
 };

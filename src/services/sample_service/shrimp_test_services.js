@@ -81,11 +81,33 @@ const getAllComplexShrimp = async (req, res) => {
 
   return ApiResponse.success(res, newsList);
 };
+
+const completeShrimp = async (req, res) => {
+  const { id } = req.params;
+  var { body } = req;
+  if (!id) return ApiResponse.error(res, "Shrimp ID Not Found", 400);
+  let newsList = await ShrimpTest.update({suggestion:body.suggestion}, {
+    where: { id: id },
+  });
+
+  const testid = body?.testId;
+  let news = await AllTest.update(
+   { status: "3" },
+   {
+     where: { id: testid },
+   }
+  );
+
+  if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, newsList);
+};
 module.exports = {
   createShrimp,
   getAllShrimp,
   getShrimp,
   deleteShrimp,
   updateShrimp,
-  getAllComplexShrimp
+  getAllComplexShrimp,
+  completeShrimp
 };
