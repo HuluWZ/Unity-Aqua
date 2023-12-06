@@ -36,7 +36,7 @@ const AllTest = sequelize.define(
     },
     status: {
       type: DataTypes.ENUM,
-      values: ["1", "2"],
+      values: ["1", "2","3"],
       defaultValue: "1",
       allowNull: false,
     },
