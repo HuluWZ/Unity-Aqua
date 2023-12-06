@@ -17,7 +17,7 @@ const createTest= async (req, res) => {
   }
   const isAlreadyExist = await AllTest.findOne({where:condition});
   if(isAlreadyExist){
-    return ApiResponse.error(res, "Test with this Tank  already exist", 200);
+    return ApiResponse.error(res, "Test with this Tank  already exist or wait 12 hours", 200);
   }
   let news = await AllTest.create(body);
   if (!news) return ApiResponse.error(res, "Something Went Wrong", 403);
@@ -32,6 +32,44 @@ const getAllTest= async (req, res) => {
     where: {
        type: type,
        status: "1"
+     },
+     order: [["createdAt", "DESC"]],
+     include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    });
+    typeResults[type.toLowerCase()] = tests;
+  });
+  await Promise.all(promises);
+
+  return ApiResponse.success(res, typeResults);
+};
+
+const getAllReportingTest= async (req, res) => {
+  const allTypes = ["Water", "Fish", "Shrimp", "Soil", "PCR", "Feed","Culture"];
+  const typeResults = {};
+  const promises = allTypes.map(async (type) => {
+  const tests = await AllTest.findAll({
+    where: {
+       type: type,
+       status: "2"
+     },
+     order: [["createdAt", "DESC"]],
+     include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
+    });
+    typeResults[type.toLowerCase()] = tests;
+  });
+  await Promise.all(promises);
+
+  return ApiResponse.success(res, typeResults);
+};
+
+const getAllCompleteTest= async (req, res) => {
+  const allTypes = ["Water", "Fish", "Shrimp", "Soil", "PCR", "Feed","Culture"];
+  const typeResults = {};
+  const promises = allTypes.map(async (type) => {
+  const tests = await AllTest.findAll({
+    where: {
+       type: type,
+       status: "3"
      },
      order: [["createdAt", "DESC"]],
      include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
@@ -82,6 +120,19 @@ const approveTest= async (req, res) => {
 
   return ApiResponse.success(res, newsList);
 };
+
+const completeTest= async (req, res) => {
+  const { id } = req.params;
+  var  body  = {status :"3"};
+
+  if (!id) return ApiResponse.error(res, "TestID Not Found", 400);
+  let newsList = await AllTest.update(body, {
+    where: { id: id },
+  });
+  if (!newsList) return ApiResponse.error(res, "Something Went Wrong", 200);
+
+  return ApiResponse.success(res, newsList);
+};
 module.exports = {
   createTest,
   getAllTest,
@@ -89,4 +140,7 @@ module.exports = {
   deleteTest,
   updateTest,
   approveTest,
+  completeTest,
+  getAllReportingTest,
+  getAllCompleteTest
 };
