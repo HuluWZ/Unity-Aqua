@@ -8,6 +8,7 @@ const errorHandler = require("../configs/error_handler_config");
 router.get("/", errorHandler(FeedTestService.getAllFeed));
 router.get("/complex/", errorHandler(FeedTestService.getAllFeed));
 router.post("/", errorHandler(FeedTestService.createFeed));
+router.put("/complete/:id", errorHandler(FeedTestService.completeFeed));
 router.put("/:id", errorHandler(FeedTestService.updateFeed));
 router.get("/:id", errorHandler(FeedTestService.getFeed));
 router.delete("/:id", errorHandler(FeedTestService.deleteFeed));
