@@ -114,9 +114,12 @@ const completePCR = async (req, res) => {
   const { id } = req.params;
   var { body } = req;
   if (!id) return ApiResponse.error(res, "PCR ID Not Found", 400);
-  let newsList = await PCRTest.update({suggestion:body.suggestion}, {
-    where: { id: id },
-  });
+  let newsList = await PCRTest.update(
+    { suggestion: body.suggestion, status: "2" },
+    {
+      where: { id: id },
+    }
+  );
 
   const testid = body?.testId;
   let news = await AllTest.update(
