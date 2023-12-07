@@ -87,9 +87,15 @@ const completeSoil = async (req, res) => {
   const { id } = req.params;
   var { body } = req;
   if (!id) return ApiResponse.error(res, "Soil ID Not Found", 400);
-  let newsList = await SoilTest.update({suggestion:body.suggestion}, {
-    where: { id: id },
-  });
+  let newsList = await SoilTest.update(
+    { 
+      suggestion: body.suggestion, 
+      status: "2" 
+    },
+    {
+      where: { id: id },
+    }
+  );
 
   const testid = body?.testId;
   let news = await AllTest.update(
