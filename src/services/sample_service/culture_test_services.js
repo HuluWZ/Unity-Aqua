@@ -143,7 +143,7 @@ const completeCulture = async (req, res) => {
   var { body } = req;
 
   if (!id) return ApiResponse.error(res, "Culture ID Not Found", 400);
-  let newsList = await CultureTest.update({suggestion:body.suggestion}, {
+  let newsList = await CultureTest.update({suggestion:body.suggestion,status:"2"}, {
     where: { id: id },
   });
 
