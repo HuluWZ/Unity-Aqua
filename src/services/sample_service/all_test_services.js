@@ -4,6 +4,13 @@ const Tank = require("../../models/tank");
 const Farmer = require("../../models/farmer");
 const User = require("../../models/user");
 const { Op } = require("sequelize");
+const CultureTest = require("../../models/sample/cultureTest");
+const FeedTest = require("../../models/sample/feedTest");
+const FishTest = require("../../models/sample/fishTest");
+const PCRTest = require("../../models/sample/pcrTest");
+const ShrimpTest = require("../../models/sample/shrimpTest");
+const SoilTest = require("../../models/sample/soilTest");
+const WaterTest = require("../../models/sample/waterTest");
 
 const createTest= async (req, res) => {
   const { body } = req;
@@ -63,22 +70,25 @@ const getAllReportingTest= async (req, res) => {
 };
 
 const getAllCompleteTest= async (req, res) => {
-  const allTypes = ["Water", "Fish", "Shrimp", "Soil", "PCR", "Feed","Culture"];
-  const typeResults = {};
-  const promises = allTypes.map(async (type) => {
-  const tests = await AllTest.findAll({
-    where: {
-       type: type,
-       status: "3"
-     },
+ async function findComplete(model) {
+   return await model.findAll({
+     where: { status: "2" },
      order: [["createdAt", "DESC"]],
-     include: [{ model: Tank, include: [{ model: Farmer, include: User }] }],
-    });
-    typeResults[type.toLowerCase()] = tests;
-  });
-  await Promise.all(promises);
+     include: [
+       { model: AllTest },
+       { model: Tank, include: [{ model: Farmer, include: User }] },
+     ],
+   });
+ }
 
-  return ApiResponse.success(res, typeResults);
+ const water = await findComplete(WaterTest);
+ const fish = await findComplete(FishTest);
+ const shrimp = await findComplete(ShrimpTest);
+ const soil = await findComplete(SoilTest);
+ const pcr = await findComplete(PCRTest);
+ const feed = await findComplete(FeedTest);
+ const culture = await findComplete(CultureTest);
+return ApiResponse.success(res, {water,fish,shrimp,soil,pcr,feed,culture});
 };
 const getTest= async (req, res) => {
   const { id } = req.params;
