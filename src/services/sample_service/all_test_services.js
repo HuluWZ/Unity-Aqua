@@ -14,7 +14,7 @@ const WaterTest = require("../../models/sample/waterTest");
 
 const createTest= async (req, res) => {
   const { body } = req;
-  const twelveHoursAgo = new Date(new Date() - 12 * 60 * 60 * 1000); // 12 hour
+  const twelveHoursAgo = new Date(new Date() - 12 * 60 * 60 * 1000); 
   const condition = {
     tankId: body?.tankId,
     type: body?.type,
