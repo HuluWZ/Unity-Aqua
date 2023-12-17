@@ -1,7 +1,9 @@
 const express = require("express");
+const cron = require('node-cron');
 const sequelize = require("./src/configs/db_config");
 const routes = require("./src/controllers/index");
 const handleError = require("./src/middlewares/handle_error");
+const { deleteTestsSync } = require('./cronJobs');
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 
@@ -16,6 +18,17 @@ app.use(routes);
 app.use(handleError);
 
 const port = process.env.PORT || 3001;
+//('*/2 * * * *'
+//('0 * * * *'
+cron.schedule('*/2 * * * *', () => {
+  deleteTestsSync()
+    .then((deletedCount) => {
+      console.log(`${deletedCount} Tests deleted successfully on  ${new Date()}`);
+    })
+    .catch((error) => {
+      console.error('Failed to delete tests:', error);
+    });
+});
 
 sequelize
   .authenticate()
