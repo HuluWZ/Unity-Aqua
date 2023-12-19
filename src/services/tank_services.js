@@ -5,7 +5,16 @@ const ApiResponse = require("../configs/api_response");
 const SERECT_KEY = require("../helpers/constants");
 const uploadToCloud = require("../configs/cloudnary");
 const User = require("../models/user");
-const {State,District} = require("../models/stateDistrict");
+
+const FishTest = require("../models/sample/fishTest");
+const CultureTest = require("../models/sample/cultureTest");
+const FeedTest = require("../models/sample/feedTest");
+const PCRTest = require("../models/sample/pcrTest");
+const WaterTest = require("../models/sample/waterTest");
+const SoilTest = require("../models/sample/soilTest");
+const ShrimpTest = require("../models/sample/shrimpTest");
+const AllTest = require("../models/sample/test");
+
 const sequelize = require("sequelize");
 
 const createTank = async (req, res) => {
@@ -102,6 +111,30 @@ const findTankFarmer = async (req, res) => {
   return ApiResponse.success(res, 
     {fish:userFish,shrimp:userShrimp,poly:userPoly});
 };
+
+const findTankReport = async (req, res) => {
+  const { id } = req.params
+ async function findComplete(model) {
+   return await model.findAll({
+     where:{tankId:id,status:"2"},
+     order: [["createdAt", "DESC"]],
+     include: [
+       { model: AllTest },
+       { model: Tank,include: [{ model: Farmer, include: User }] },
+     ],
+   });
+ }
+
+ const water = await findComplete(WaterTest);
+ const fish = await findComplete(FishTest);
+ const shrimp = await findComplete(ShrimpTest);
+ const soil = await findComplete(SoilTest);
+ const pcr = await findComplete(PCRTest);
+ const feed = await findComplete(FeedTest);
+ const culture = await findComplete(CultureTest);
+ return ApiResponse.success(res, {water,fish,shrimp,soil,pcr,feed,culture}); 
+};
+
 module.exports = {
   createTank,
   deleteTank,
@@ -109,4 +142,5 @@ module.exports = {
   findTankFarmer,
   findTank,
   findFarmerTankFromPhone,
+  findTankReport
 };
