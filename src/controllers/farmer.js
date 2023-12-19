@@ -9,6 +9,7 @@ const verifyToken = require("../middlewares/verify_token");
 
 router.post("/", verifyToken,errorHandler(FarmerServices.createFarmer));
 router.get("/find/:id", errorHandler(FarmerServices.findFarmer));
+router.get("/filter/:cultureType", errorHandler(FarmerServices.filterFarmer));
 router.get("/", errorHandler(FarmerServices.findFarmerAll));
 router.get("/:phone", errorHandler(FarmerServices.findFarmerFromPhone));
 router.delete("/delete/:id", errorHandler(FarmerServices.deleteFarmer));
