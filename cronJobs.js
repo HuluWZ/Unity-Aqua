@@ -4,7 +4,6 @@ const { Sequelize } = require('sequelize');
 function deleteTestsSync() {
   var today = new Date();
   today.setHours(0, 0, 0, 0);
-  console.log(" Today ",today)
   return AllTest.destroy({
     where: {
       status: "1",
