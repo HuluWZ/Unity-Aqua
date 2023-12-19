@@ -18,9 +18,8 @@ app.use(routes);
 app.use(handleError);
 
 const port = process.env.PORT || 3001;
-//('*/2 * * * *'
-//('0 * * * *'
-cron.schedule('*/2 * * * *', () => {
+
+cron.schedule('0 0 * * *', () => {
   deleteTestsSync()
     .then((deletedCount) => {
       console.log(`${deletedCount} Tests deleted successfully on  ${new Date()}`);
@@ -28,6 +27,8 @@ cron.schedule('*/2 * * * *', () => {
     .catch((error) => {
       console.error('Failed to delete tests:', error);
     });
+},{
+  timezone: 'Asia/Kolkata'
 });
 
 sequelize
