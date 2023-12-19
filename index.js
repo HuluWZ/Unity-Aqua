@@ -3,7 +3,7 @@ const cron = require('node-cron');
 const sequelize = require("./src/configs/db_config");
 const routes = require("./src/controllers/index");
 const handleError = require("./src/middlewares/handle_error");
-const { deleteTestsSync } = require('./cronJobs');
+const { deleteTestsSync } = require('./src/cronJobs');
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 
