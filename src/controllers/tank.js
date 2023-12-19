@@ -9,6 +9,7 @@ const verifyToken = require("../middlewares/verify_token");
 router.post("/", errorHandler(TankServices.createTank));
 router.get("/farmer/:id", errorHandler(TankServices.findTankFarmer));
 router.get("/find/:id", errorHandler(TankServices.findTank));
+router.get("/report/:id", errorHandler(TankServices.findTankReport));
 router.get("/", errorHandler(TankServices.findTankAll));
 router.get("/:phone", errorHandler(TankServices.findFarmerTankFromPhone));
 router.delete("/delete/:id", errorHandler(TankServices.deleteTank));
