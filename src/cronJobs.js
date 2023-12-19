@@ -1,4 +1,4 @@
-const AllTest = require("./src/models/sample/test");
+const AllTest = require("./models/sample/test");
 const { Sequelize } = require('sequelize');
 
 function deleteTestsSync() {
