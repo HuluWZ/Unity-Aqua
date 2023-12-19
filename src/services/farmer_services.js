@@ -67,10 +67,25 @@ const findFarmer = async (req, res) => {
 
   return ApiResponse.success(res, user);
 };
+const filterFarmer = async (req, res) => {
+  const { cultureType } = req.params;
+  if (!cultureType) return ApiResponse.error(res, "Farmer cultureType is not Provided", 400);
+
+  let user = await Farmer.findAll({
+    where: { cultureType: cultureType },
+    include:[User],
+    order: [["createdAt", "DESC"]],
+  });
+  
+  if (!user) return ApiResponse.error(res, "No Farmer with this cultureType", 404);
+
+  return ApiResponse.success(res, user);
+};
 module.exports = {
   createFarmer,
   deleteFarmer,
   findFarmerAll,
   findFarmer,
   findFarmerFromPhone,
+  filterFarmer
 };
