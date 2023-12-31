@@ -1,7 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../configs/db_config");
 const User = require("./user");
-const {State,District} = require("./stateDistrict");
 
 const Farmer = sequelize.define(
   "farmer",
