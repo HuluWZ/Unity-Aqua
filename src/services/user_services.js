@@ -4,7 +4,6 @@ const LabAssistant = require("../models/labAssistant");
 const ApiResponse = require("../configs/api_response");
 const SERECT_KEY = require("../helpers/constants");
 const uploadToCloud = require("../configs/cloudnary");
-const { State, District } = require("../models/stateDistrict");
 
 const signUp = async (req, res) => {
 
