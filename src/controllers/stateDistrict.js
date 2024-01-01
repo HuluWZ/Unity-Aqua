@@ -9,12 +9,12 @@ router.post(
   "/state",
   errorHandler(BookServices.createState)
 );
+router.get("/state/find/:id", errorHandler(BookServices.getAllDistrictFromState));
 router.get("/state", errorHandler(BookServices.getAllState));
 router.get("/state/:id", errorHandler(BookServices.getState));
 router.delete("/state/:id", errorHandler(BookServices.deleteState));
 router.put("/state/:id", 
 errorHandler(BookServices.updateState));
-router.post("/state/district/:id", errorHandler(BookServices.getAllDistrictFromState));
 
 router.post("/district", errorHandler(BookServices.createDistrict));
 router.get("/district", errorHandler(BookServices.getAllDistrict));
